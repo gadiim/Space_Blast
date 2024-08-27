@@ -485,3 +485,7 @@ const btnStart = document.getElementById('btn-start');
 btnStart.onclick=()=>{startGame()};
 // startGame();
 
+
+
+let cv = document.getElementById('ammo-value');
+cv.innerText = ammo;
