@@ -14,8 +14,8 @@ const starship = {
     width: 35,                 
     height: 40,                
     color: 'lightblue',          
-    dx: 10,                      // move step by X
-    dy: 10,                      // move step by Y
+    dx: 5,                      // move step by X
+    dy: 5,                      // move step by Y
 
     //drawinhg
     flameWidth: 10,
@@ -139,6 +139,7 @@ function onKeyUp(event) {
 //SHOTING
 
 let bullets = []; // Array to store multiple bullets
+let ammo = 10;
 
 function drawBullet(bullet) {
     ctx.fillStyle = bullet.color;
@@ -153,7 +154,7 @@ function updateBullet(bullet, index) {
 }
 
 function Shot(event) {
-    if (event.key === ' ') {  // Check if the spacebar is pressed
+    if (event.key === ' ' && bullets.length < 5 && ammo > 0) {  // Check if the spacebar is pressed
         const newBullet = {
             width: 4,
             height: 8,
@@ -165,8 +166,11 @@ function Shot(event) {
         };
         bullets.push(newBullet); // Add the new bullet to the array
         console.log('Bullet shot');
+        ammo -= 1;
     }
 }
+
+
 
 
 //////////////////////
@@ -373,22 +377,27 @@ function checkCollision(objects) {
 }
 
 function checkCrashTarget(objects, bullets) {
-    for (let bu = 0; bu < objects.length; bu++) {
+    for (let bu = bullets.length - 1; bu >= 0; bu--) {  // Loop backward to avoid index issues when removing elements
         const bullet = bullets[bu];
-        for (let ob = 0; ob < objects.length; ob++) {
+        for (let ob = objects.length - 1; ob >= 0; ob--) {
             const object = objects[ob];
+            // Check if bullet intersects with object
             if (
-                bullet.x < object.x &&
+                bullet.x < object.x + obstacleWidth &&
                 bullet.x + bullet.width > object.x &&
-                bullet.y < object.y &&
+                bullet.y < object.y + obstacleHeight &&
                 bullet.y + bullet.height > object.y
             ) {
-                object.splice(index, 1);
-                bullet.splice(index, 1);
+                console.log('Crash detected');
+                // Remove the bullet and the object from the arrays
+                objects.splice(ob, 1);
+                bullets.splice(bu, 1);
+                break; // Exit the inner loop as the bullet is already removed
             }
         }
     }
 }
+
 
 function checkCollisions() {
 
@@ -430,7 +439,7 @@ function update() {
         bullets.forEach(updateBullet); // Update all bullets in the array
         checkCollisions();   // Check for collisions
 
-        checkCrashTarget(asteroids2, bullets)
+        checkCrashTarget(asteroids2, bullets);
 
         draw();             // Draw everything
     }
