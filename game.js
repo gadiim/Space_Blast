@@ -3,12 +3,24 @@ const ctx = canvas.getContext('2d');
 
 let gameInterval;              // Інтервал для оновлення гри
 let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
+let isInvulnerable = false;  
+let blinkInterval;  
 
 let ammoValue = document.getElementById('ammo-value');
+let hpValue = document.getElementById('hp-value');
+
+const keys = {
+    ArrowLeft: false,
+    ArrowRight: false,
+    ArrowUp: false,
+    ArrowDown: false,
+    Space: false,
+    Enter: false
+};
 
 // starship
 
-// starship
+
 
 const starship = {
     x: canvas.width / 2 - 20,  // X-axis starting position
@@ -23,46 +35,65 @@ const starship = {
     flameWidth: 10,
     flameHeight: 3,
     flameColor: 'tomato',
+    widthFuselage: 10,
+    heightFuselage: 20,
+    colorFuselage: 'grey',
+    widthCockpit: 8,
+    heightCockpit: 10,
+    colorCockpit: 'blue',
+
+    hp: 2,
+    ammo: 10,
+
 
 };
 
-// Key state tracking
-const keys = {
-    ArrowLeft: false,
-    ArrowRight: false,
-    ArrowUp: false,
-    ArrowDown: false,
-    Space: false,
-    Enter: false
-};
+hpValue.innerText = starship.hp;
+ammoValue.innerText = starship.ammo;
 
+function drawStarshipFuselage() {
+    ctx.fillStyle = starship.colorFuselage;
+    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.widthFuselage / 2)), starship.y + starship.height / 2, starship.widthFuselage, starship.heightFuselage);
+}
+
+function drawStarshipCockpit() {
+    ctx.fillStyle = starship.colorCockpit;
+    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.widthCockpit / 2)), starship.y + starship.height / 2.5, starship.widthCockpit, starship.heightCockpit);
+}
 function drawStarshipFlame() {
     ctx.fillStyle = starship.flameColor;
-    ctx.fillRect(starship.x + (starship.width/2-(starship.flameWidth/2)), starship.y + starship.height, starship.flameWidth, starship.flameHeight);
+    ctx.fillRect(starship.x + ((starship.width / 2)-(starship.flameWidth / 2)), starship.y + starship.height, starship.flameWidth, starship.flameHeight);
 }
 
 function drawStarship() {
-
-    ctx.fillStyle = starship.color;
-    ctx.beginPath();
-    // Draw a simple triangular starship
-    ctx.moveTo(starship.x + starship.width / 2, starship.y); // Top of the triangle
-    ctx.lineTo(starship.x, starship.y + starship.height);    // Bottom-left
-    ctx.lineTo(starship.x + starship.width, starship.y + starship.height); // Bottom-right
-    ctx.closePath();
-    ctx.fill(); // Fill the shape with color
     
-    ctx.fillStyle = 'grey';
-    ctx.fillRect(starship.x + (starship.width/2-5), starship.y + starship.height / 2, 10, 20);
-
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(starship.x + (starship.width/2-4), starship.y + starship.height / 2.5, 8, 10);
-
+    // let gradient = ctx.createLinearGradient(starship.x, starship.y, starship.x + starship.width, starship.y + starship.height);
+    // gradient.addColorStop(0, 'lightblue');
+    // gradient.addColorStop(1, 'blue');
+    // ctx.fillStyle = gradient;
+    
+    ctx.beginPath(); 
+    ctx.moveTo(starship.x + starship.width / 2, starship.y); // top
+    ctx.lineTo(starship.x, starship.y + starship.height);    // left
+    ctx.lineTo(starship.x + starship.width, starship.y + starship.height); // right
+    ctx.closePath();
+    ctx.fill();
+    drawStarshipFuselage(); 
+    drawStarshipCockpit();
     drawStarshipFlame();
-    // ctx.fillStyle = 'tomato';
-    // ctx.fillRect(starship.x + (starship.width/2-5), starship.y + starship.height, 10, 3);
+}
 
+// starshipstates
 
+function startBlinking() {
+    blinkInterval = setInterval(() => {
+        starship.color = starship.color === 'transparent' ? 'red' : 'transparent';
+    }, 200);
+}
+
+function stopBlinking() {
+    clearInterval(blinkInterval);
+    starship.color = 'lightblue';
 }
 
 // Update starship position based on key states
@@ -143,8 +174,7 @@ function onKeyUp(event) {
 //SHOTING
 
 let bullets = []; // Array to store multiple bullets
-let ammo = 10;
-ammoValue.innerText = ammo;
+
 
 function drawBullet(bullet) {
     ctx.fillStyle = bullet.color;
@@ -159,7 +189,7 @@ function updateBullet(bullet, index) {
 }
 
 function Shot(event) {
-    if (event.key === ' ' && bullets.length < 5 && ammo > 0) {  // Check if the spacebar is pressed
+    if (event.key === ' ' && bullets.length < 5 && starship.ammo > 0) {  // Check if the spacebar is pressed
         const newBullet = {
             width: 4,
             height: 8,
@@ -171,8 +201,8 @@ function Shot(event) {
         };
         bullets.push(newBullet); // Add the new bullet to the array
         console.log('Bullet shot');
-        ammo -= 1;
-        ammoValue.innerText = ammo;
+        starship.ammo --;
+        ammoValue.innerText = starship.ammo;
     }
 }
 
@@ -396,11 +426,10 @@ function checkCrashTarget(objects, bullets) {
                 bullet.y < object.y + asteroid3Radius &&
                 bullet.y + bullet.height > object.y
             ) {
-                console.log('Crash detected');
-                // Remove the bullet and the object from the arrays
+                console.log('Crash detected'); // 
                 objects.splice(ob, 1);
                 bullets.splice(bu, 1);
-                break; // Exit the inner loop as the bullet is already removed
+                break; // if removed
             }
         }
     }
@@ -408,18 +437,44 @@ function checkCrashTarget(objects, bullets) {
 
 
 function checkCollisions() {
-
-    if (checkCollision(asteroids2) || checkCollision(asteroids3)) {
-        starship.color = 'tomato';
-        isGameOver = true;
-        clearInterval(gameInterval);
-        alert("Game Over!");
+    if (isInvulnerable) {
+        return; // Skip collision checks if invulnerable
     }
 
-    
-}
+    if (checkCollision(asteroids2) || checkCollision(asteroids3)) {
+        starship.color = 'red';
+        
+        if (starship.hp > 0) {
+            starship.hp--;
+            hpValue.innerText = starship.hp;
 
-// Функція для руху гравця вліво або вправо
+            // Start blinking effect
+            startBlinking();
+
+            setTimeout(() => { 
+                starship.color = 'lightblue';
+                stopBlinking(); // Stop blinking after 3 seconds
+            }, 3000);
+
+            starship.x = canvas.width / 2 - 20; // Back to start position
+            starship.y = canvas.height - 60;
+            
+            // Activate invulnerability
+            isInvulnerable = true;
+
+            // Set a timeout to end invulnerability after 3 seconds
+            setTimeout(() => {
+                isInvulnerable = false;
+            }, 3000);
+
+            return;
+        } else {
+            isGameOver = true;
+            clearInterval(gameInterval);
+            alert("Game Over!");
+        }
+    }
+}
 
 
 // Функція для малювання всіх елементів на екрані
