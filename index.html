@@ -17,13 +17,33 @@
             background-color: #000;
             border: 1px solid #fff;
         }
+        #status-display {
+            color: aliceblue;
+            color: cadetblue;
+        }
     </style>
 </head>
 <body>
     
     <!-- <canvas id="gameCanvas" width="480" height="320"></canvas> -->
     <div>
-        <table>
+        <table id="status-display">
+            <tr>
+                <td id="level-legend">
+                    level
+                </td>
+                <td id="level-value">
+                    1
+                </td>
+            </tr>
+            <tr>
+                <td id="hp-legend">
+                    hp
+                </td>
+                <td id="hp-value">
+                    0
+                </td>
+            </tr>
             <tr>
                 <td id="ammo-legend">
                     ammo
@@ -32,7 +52,6 @@
                     0
                 </td>
             </tr>
-        </table>
     </div>
     <canvas id="gameCanvas" width="640" height="480"></canvas>
     <button id="btn-start">Start</button>

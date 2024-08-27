@@ -4,6 +4,8 @@ const ctx = canvas.getContext('2d');
 let gameInterval;              // Інтервал для оновлення гри
 let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
 
+let ammoValue = document.getElementById('ammo-value');
+
 // starship
 
 // starship
@@ -40,6 +42,7 @@ function drawStarshipFlame() {
 }
 
 function drawStarship() {
+
     ctx.fillStyle = starship.color;
     ctx.beginPath();
     // Draw a simple triangular starship
@@ -58,6 +61,7 @@ function drawStarship() {
     drawStarshipFlame();
     // ctx.fillStyle = 'tomato';
     // ctx.fillRect(starship.x + (starship.width/2-5), starship.y + starship.height, 10, 3);
+
 
 }
 
@@ -140,6 +144,7 @@ function onKeyUp(event) {
 
 let bullets = []; // Array to store multiple bullets
 let ammo = 10;
+ammoValue.innerText = ammo;
 
 function drawBullet(bullet) {
     ctx.fillStyle = bullet.color;
@@ -167,6 +172,7 @@ function Shot(event) {
         bullets.push(newBullet); // Add the new bullet to the array
         console.log('Bullet shot');
         ammo -= 1;
+        ammoValue.innerText = ammo;
     }
 }
 
@@ -366,9 +372,11 @@ function checkCollision(objects) {
         const object = objects[i];
         if (
             starship.x < object.x &&
+            starship.x < object.x + asteroid3Radius &&
             starship.x + starship.width > object.x &&
-            starship.y < object.y &&
+            starship.y < object.y + asteroid3Radius &&
             starship.y + starship.height > object.y
+
         ) {
             return true;
         }
@@ -383,9 +391,9 @@ function checkCrashTarget(objects, bullets) {
             const object = objects[ob];
             // Check if bullet intersects with object
             if (
-                bullet.x < object.x + obstacleWidth &&
+                bullet.x < object.x + asteroid3Radius &&
                 bullet.x + bullet.width > object.x &&
-                bullet.y < object.y + obstacleHeight &&
+                bullet.y < object.y + asteroid3Radius &&
                 bullet.y + bullet.height > object.y
             ) {
                 console.log('Crash detected');
@@ -488,4 +496,3 @@ btnStart.onclick=()=>{startGame()};
 
 
 let cv = document.getElementById('ammo-value');
-cv.innerText = ammo;
