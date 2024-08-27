@@ -3,8 +3,8 @@ const ctx = canvas.getContext('2d');
 
 let gameInterval;              // Інтервал для оновлення гри
 let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
-let isInvulnerable = false;  
-let blinkInterval;  
+let isInvulnerable = false;
+let blinkInterval;
 
 let ammoValue = document.getElementById('ammo-value');
 let hpValue = document.getElementById('hp-value');
@@ -25,9 +25,9 @@ const keys = {
 const starship = {
     x: canvas.width / 2 - 20,  // X-axis starting position
     y: canvas.height - 60,     // Y-axis starting position
-    width: 35,                 
-    height: 40,                
-    color: 'lightblue',          
+    width: 35,
+    height: 40,
+    color: 'lightblue',
     dx: 5,                      // move step by X
     dy: 5,                      // move step by Y
 
@@ -62,23 +62,25 @@ function drawStarshipCockpit() {
 }
 function drawStarshipFlame() {
     ctx.fillStyle = starship.flameColor;
-    ctx.fillRect(starship.x + ((starship.width / 2)-(starship.flameWidth / 2)), starship.y + starship.height, starship.flameWidth, starship.flameHeight);
+    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.flameWidth / 2)), starship.y + starship.height, starship.flameWidth, starship.flameHeight);
 }
 
 function drawStarship() {
-    
+
     // let gradient = ctx.createLinearGradient(starship.x, starship.y, starship.x + starship.width, starship.y + starship.height);
     // gradient.addColorStop(0, 'lightblue');
     // gradient.addColorStop(1, 'blue');
     // ctx.fillStyle = gradient;
-    
-    ctx.beginPath(); 
+
+    ctx.beginPath();
+    ctx.fillStyle = starship.color;
     ctx.moveTo(starship.x + starship.width / 2, starship.y); // top
     ctx.lineTo(starship.x, starship.y + starship.height);    // left
     ctx.lineTo(starship.x + starship.width, starship.y + starship.height); // right
     ctx.closePath();
     ctx.fill();
-    drawStarshipFuselage(); 
+
+    drawStarshipFuselage();
     drawStarshipCockpit();
     drawStarshipFlame();
 }
@@ -98,40 +100,41 @@ function stopBlinking() {
 
 // Update starship position based on key states
 function updateStarship() {
-    if (keys.ArrowLeft && starship.x > 0) {  
-        starship.x -= starship.dx;  
+    if (keys.ArrowLeft && starship.x > 0) {
+        starship.x -= starship.dx;
         // starship.width = 30;
     }
-    if (keys.ArrowRight && starship.x + starship.width < canvas.width) {  
-        starship.x += starship.dx; 
+    if (keys.ArrowRight && starship.x + starship.width < canvas.width) {
+        starship.x += starship.dx;
         // starship.width = 30; 
     }
-    if (keys.ArrowUp && starship.y > 0) {  
+    if (keys.ArrowUp && starship.y > 0) {
         starship.y -= starship.dy;
-        
+
     }
-    if (keys.ArrowDown && starship.y + starship.height < canvas.height) {  
-        starship.y += starship.dy; 
-        starship.flameHeight = 1; 
+    if (keys.ArrowDown && starship.y + starship.height < canvas.height) {
+        starship.y += starship.dy;
+        starship.flameHeight = 1;
     };
 
     if (keys.ArrowRight || keys.ArrowLeft) {
-        starship.width = 28; 
+        starship.width = 28;
     }
-    else {starship.width = 35;};
+    else { starship.width = 35; };
 
     if (keys.ArrowUp) {
-        starship.flameHeight = 8; 
+        starship.flameHeight = 8;
         starship.flameColor = 'red';
     }
     else if (keys.ArrowDown) {
-        starship.flameHeight = 2; 
+        starship.flameHeight = 2;
         starship.flameColor = 'orange';
     }
-    else {starship.flameHeight = 3;
-            starship.flameColor = 'tomato';
+    else {
+        starship.flameHeight = 3;
+        starship.flameColor = 'tomato';
     };
-    
+
 }
 
 // Handle key down event
@@ -193,7 +196,7 @@ function Shot(event) {
         const newBullet = {
             width: 4,
             height: 8,
-            x: starship.x + starship.width/2 - 2,
+            x: starship.x + starship.width / 2 - 2,
             y: starship.y,
 
             color: 'blue',
@@ -201,13 +204,98 @@ function Shot(event) {
         };
         bullets.push(newBullet); // Add the new bullet to the array
         console.log('Bullet shot');
-        starship.ammo --;
+        starship.ammo--;
         ammoValue.innerText = starship.ammo;
     }
 }
 
+/////////////////////////////
+// HP
+
+const hpPackArray = [];
 
 
+function drawHpPack(hpPack) {                         // drawing object
+    ctx.fillStyle = hpPack.color;               // set color
+    ctx.fillRect(hpPack.x, hpPack.y, hpPack.width, hpPack.height); // draw rectangle
+
+    // const radius = 20; // Radius for rounded corners
+
+    // ctx.beginPath();
+    // // Draw the rectangle with rounded corners
+    // ctx.moveTo(hpPack.x + radius, hpPack.y);
+    // ctx.lineTo(hpPack.x + hpPack.width - radius, hpPack.y);
+    // ctx.arcTo(hpPack.x + hpPack.width, hpPack.y, hpPack.x + hpPack.width, hpPack.y + hpPack.height, radius);
+    // ctx.lineTo(hpPack.x + hpPack.width, hpPack.y + hpPack.height - radius);
+    // ctx.arcTo(hpPack.x + hpPack.width, hpPack.y + hpPack.height, hpPack.x, hpPack.y + hpPack.height, radius);
+    // ctx.lineTo(hpPack.x, hpPack.y + hpPack.height);
+    // ctx.arcTo(hpPack.x, hpPack.y + hpPack.height, hpPack.x, hpPack.y, radius);
+    // ctx.lineTo(hpPack.x, hpPack.y + radius);
+    // ctx.arcTo(hpPack.x, hpPack.y, hpPack.x + hpPack.width, hpPack.y, radius);
+    // ctx.closePath();
+    
+    // ctx.fillStyle = hpPack.color;               // Set the color for the object
+    // ctx.fill();         
+
+
+    // Set the text properties
+    ctx.fillStyle = 'tomato';                    // Color for the text
+    ctx.font = 'bold 16px Arial';               // Font style and size
+    ctx.textAlign = 'center';                  // Align text to the center
+    ctx.textBaseline = 'middle';               // Align text vertically to the middle
+
+    // Draw the text "HP" in the center of the object
+    ctx.fillText('HP', hpPack.x + hpPack.width / 2, hpPack.y + hpPack.height / 2);
+}
+
+function createHpPack() {
+    const hpPack = {                                // create object
+        x: Math.random() * (canvas.width - 30),     // start position horizontally
+        y: 30,                                       // start position vertically
+        width: 30,                                  // object size (width)
+        height: 30,                                 // object size (height)
+        color: 'yellow',                            // object color
+        speed: 2,                                  // object speed (movement rate)
+    }
+    hpPackArray.push(hpPack);  // Додаємо star до масиву
+    
+}
+
+function updateHpPack() {                       // updating object data
+    // if (hpPack === null) {                      // check if hpPack is null
+    //     return;                                // exit function if it's null
+    // }
+
+    // hpPack.y += hpPack.speed;                   // move object down by its speed
+    // if (hpPack.y > canvas.height) {             // if object moves off the bottom of the screen
+    //     hpPack = null;                         // set object to null, effectively removing it
+    // }
+    hpPackArray.forEach((hpPack, index) => {
+        hpPack.y += hpPack.speed;  // Переміщуємо перешкоду вниз
+        if (hpPack.y > canvas.height) {  // Якщо перешкода вийшла за межі екрану
+            hpPackArray.splice(index, 1);  // Видаляємо її з масиву
+        }
+    });
+}
+
+function checkHpCollision(packs) {                   // objects intersection
+    for (let i = 0; i < packs.length; i++) {
+        const pack = packs[i];
+        if (
+
+
+            pack.x < starship.x + starship.width && // Left edge of hpPack is to the left of the right edge of starship
+            pack.x + pack.width > starship.x && // Right edge of hpPack is to the right of the left edge of starship
+            pack.y < starship.y + starship.height && // Top edge of hpPack is above the bottom edge of starship
+            pack.y + pack.height > starship.y     // Bottom edge of hpPack is below the top edge of starship
+
+        ) {
+            starship.hp++;                          // grow hp
+            hpValue.innerText = starship.hp;        // show in display
+            hpPackArray.splice(i, 1);                         // removing objects
+        }
+    }
+}
 
 //////////////////////
 
@@ -228,7 +316,7 @@ function createStar() {
     const x = Math.random() * (canvas.width - starWidth);  // Випадкова позиція по осі X
     const color = 'white';
     stars.push({ x, y: 0, color });  // Додаємо star до масиву
-    
+
 }
 
 function updateStars() {
@@ -253,7 +341,7 @@ function createStar2() {
     const x = Math.random() * (canvas.width - star2Width);  // Випадкова позиція по осі X
     const color = 'lightgrey';
     stars2.push({ x, y: 0, color });  // Додаємо star до масиву
-    
+
 }
 
 function updateStars2() {
@@ -281,15 +369,15 @@ function drawAsteroid3(asteroid) {
     ctx.arc(asteroid.x + asteroid3Radius / 2, asteroid.y + asteroid3Radius / 2, asteroid3Radius / 2, 0, Math.PI * 2);
     ctx.fillStyle = asteroid.color || 'gray';
     ctx.fill();
-  
+
     for (let i = 0; i < 20; i++) {
-      ctx.fillStyle = 'red';
-      ctx.fillRect(
-        asteroid.x + Math.random() * asteroid3Radius - asteroid3Radius / 2,
-        asteroid.y + Math.random() * asteroid3Radius - asteroid3Radius / 2,
-        2,
-        2
-      );
+        ctx.fillStyle = 'red';
+        ctx.fillRect(
+            asteroid.x + Math.random() * asteroid3Radius - asteroid3Radius / 2,
+            asteroid.y + Math.random() * asteroid3Radius - asteroid3Radius / 2,
+            2,
+            2
+        );
     }
 }
 
@@ -303,7 +391,7 @@ function createAsteroid3() {
 function updateAsteroids3() {
     asteroids3.forEach((asteroid, index) => {
         asteroid.y += asteroid3Speed;  // moving down;
-         // asteroid.x -= asteroid3Speed; // moving left;
+        // asteroid.x -= asteroid3Speed; // moving left;
         asteroid.x += asteroid3Speed; // moving right;
         if (asteroid.y > canvas.height) {  // Якщо перешкода вийшла за межі екрану
             asteroids3.splice(index, 1);  // Видаляємо її з масиву
@@ -329,7 +417,7 @@ function drawAsteroid2(asteroid) {
     ctx.fillStyle = asteroid.color || 'gray';
     ctx.fill();
 
-  
+
     // for (let i = 0; i < 5; i++) {
     //   ctx.fillStyle = 'yellow';
     //   ctx.fillRect(
@@ -362,7 +450,7 @@ function updateAsteroids2() {
 //SOME OBSTICAL
 
 // Масив для зберігання перешкод
-const obstacles = []; 
+const obstacles = [];
 const obstacleWidth = 30;      // Ширина перешкоди
 const obstacleHeight = 30;     // Висота перешкоди
 const obstacleSpeed = 3;       // Швидкість падіння перешкод
@@ -415,59 +503,57 @@ function checkCollision(objects) {
 }
 
 function checkCrashTarget(objects, bullets) {
-    for (let bu = bullets.length - 1; bu >= 0; bu--) {  // Loop backward to avoid index issues when removing elements
-        const bullet = bullets[bu];
+    // Loop through bullets array backwards to avoid index issues when removing elements
+    for (let bu = bullets.length - 1; bu >= 0; bu--) {
+        const bullet = bullets[bu];                             // current bullet
+        // Loop through objects array backwards to avoid index issues when removing elements
         for (let ob = objects.length - 1; ob >= 0; ob--) {
-            const object = objects[ob];
-            // Check if bullet intersects with object
+            const object = objects[ob];                         // current object
+
+            // Check if the current bullet intersects with the current object
             if (
-                bullet.x < object.x + asteroid3Radius &&
-                bullet.x + bullet.width > object.x &&
-                bullet.y < object.y + asteroid3Radius &&
-                bullet.y + bullet.height > object.y
+                bullet.x < object.x + asteroid3Radius &&        // bullet оn the left
+                bullet.x + bullet.width > object.x &&           // bullet оn the right
+                bullet.y < object.y + asteroid3Radius &&        // bullet is above
+                bullet.y + bullet.height > object.y             // bullet is below
             ) {
-                console.log('Crash detected'); // 
-                objects.splice(ob, 1);
-                bullets.splice(bu, 1);
-                break; // if removed
+                console.log('Crash detected');                  // console check
+
+                objects.splice(ob, 1);                          // remove the object from the array
+                bullets.splice(bu, 1);                          // remove the bullet from the array
+                break;                                          // stop loop since
             }
         }
     }
 }
 
 
+
 function checkCollisions() {
     if (isInvulnerable) {
-        return; // Skip collision checks if invulnerable
+        return;                                                 // skip collision
     }
 
     if (checkCollision(asteroids2) || checkCollision(asteroids3)) {
-        starship.color = 'red';
-        
-        if (starship.hp > 0) {
-            starship.hp--;
-            hpValue.innerText = starship.hp;
 
-            // Start blinking effect
-            startBlinking();
+        if (starship.hp > 1) {
+            starship.hp--;                                      // less hp
+            hpValue.innerText = starship.hp;                    // show in display
 
-            setTimeout(() => { 
-                starship.color = 'lightblue';
-                stopBlinking(); // Stop blinking after 3 seconds
-            }, 3000);
+            startBlinking();                                    // blinking effect
 
-            starship.x = canvas.width / 2 - 20; // Back to start position
-            starship.y = canvas.height - 60;
-            
-            // Activate invulnerability
-            isInvulnerable = true;
-
-            // Set a timeout to end invulnerability after 3 seconds
             setTimeout(() => {
-                isInvulnerable = false;
-            }, 3000);
+                isInvulnerable = false;                         // disactivate invulnerability
+                starship.color = 'lightblue';                   // back to normal color
+                stopBlinking();                                 // stop blinking
+            }, 3000);                                           // 3 sec
 
-            return;
+            starship.x = canvas.width / 2 - 20;                 // back to start position
+            starship.y = canvas.height - 60;
+
+            isInvulnerable = true;                              // activate invulnerability
+
+            return;                                             // skip collision
         } else {
             isGameOver = true;
             clearInterval(gameInterval);
@@ -483,13 +569,14 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear screen
     stars.forEach(drawStar);  // Draw stars
     stars2.forEach(drawStar2);  // Draw stars
-    
+
     asteroids2.forEach(drawAsteroid2);  // Draw asteroids2
     asteroids3.forEach(drawAsteroid3);  // Draw asteroids3
 
     bullets.forEach(drawBullet); // Draw all bullets in the array
     drawStarship();  // Draw starship
-}   
+    hpPackArray.forEach(drawHpPack);
+}
 
 // Функція для оновлення стану гри
 function update() {
@@ -499,10 +586,12 @@ function update() {
         updateAsteroids2();  // Update asteroids2
         updateAsteroids3();  // Update asteroids3
         updateStarship();  // Update starship position
+        updateHpPack();
         bullets.forEach(updateBullet); // Update all bullets in the array
         checkCollisions();   // Check for collisions
 
         checkCrashTarget(asteroids2, bullets);
+        checkHpCollision(hpPackArray);
 
         draw();             // Draw everything
     }
@@ -510,6 +599,7 @@ function update() {
 
 // Start game
 function startGame() {
+    createHpPack();
     gameInterval = setInterval(() => {
         update();  // Update game state
         if (Math.random() < 3) {  // 10% chance to create a star
@@ -533,9 +623,10 @@ function startGame() {
 //start
 
 document.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            startGame(); 
-}});
+    if (event.key === 'Enter') {
+        startGame();
+    }
+});
 
 // Event listeners for key presses
 document.addEventListener('keydown', onKeyDown);
@@ -545,9 +636,8 @@ document.addEventListener('keydown', Shot);
 
 // Start the game
 const btnStart = document.getElementById('btn-start');
-btnStart.onclick=()=>{startGame()};
+btnStart.onclick = () => { startGame() };
 // startGame();
 
 
 
-let cv = document.getElementById('ammo-value');
