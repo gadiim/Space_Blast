@@ -430,15 +430,16 @@ function drawAsteroid2(asteroid) {
 }
 
 function createAsteroid2() {
+    let speed = Math.floor(Math.random() * 5) + 3;
     const x = Math.random() * (canvas.width - asteroid2Radius);
     const grayShade = Math.floor(Math.random() * 16).toString(16);
     const color = `#${grayShade}${grayShade}${grayShade}`;
-    asteroids2.push({ x, y: -asteroid2Radius, color });
+    asteroids2.push({ x, y: -asteroid2Radius, color, speed });
 }
 
 function updateAsteroids2() {
     asteroids2.forEach((asteroid, index) => {
-        asteroid.y += asteroid2Speed;  // Переміщуємо перешкоду вниз
+        asteroid.y += asteroid.speed;  // Переміщуємо перешкоду вниз
         if (asteroid.y > canvas.height) {  // Якщо перешкода вийшла за межі екрану
             asteroids2.splice(index, 1);  // Видаляємо її з масиву
         }
