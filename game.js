@@ -396,7 +396,7 @@ function checkCollisions() {
         starship.color = 'tomato';
         isGameOver = true;
         clearInterval(gameInterval);
-        alert('Гра закінчена!');
+        alert("Game Over!");
     }
 
     
