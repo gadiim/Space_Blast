@@ -1,62 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Blast | Game</title>
     <style>
+
+        :root {
+            --display-height: 100vh;
+            --display-block-height: 480px;
+        }
+        
         body {
             margin: 0;
-            display: flex;
+            font-family: 'Lucida Sans', 
+            'Lucida Sans Regular', 
+            'Lucida Grande', 
+            'Lucida Sans Unicode', 
+            Geneva, Verdana, sans-serif;
+
+            /* display: flex;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: rgb(25, 25, 25);
+            background-color: rgb(25, 25, 25); */
         }
+
         canvas {
             background-color: #000;
             border: 1px solid #fff;
         }
-        #status-display {
+
+        .game-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            height: var(--display-height);
+            background-color: rgb(25, 25, 25);
+            font-size: larger;        
+        }
+        .status-display {
+            display: flex;
             color: aliceblue;
-            color: cadetblue;
+            width: 20%;
+            height: var(--display-block-height);
+            flex-wrap: nowrap;
+            background-color: red;
+            color: white;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* .status-display table {
+            margin: 20px;
+        } */
+
+        .main-display {
+            display: flex;
+            color: aliceblue;
+            width: auto;
+            height: auto;
+            flex-wrap: nowrap;
+            background-color: yelliw;
+        }
+
+        .button-display {
+            display: flex;
+            color: aliceblue;
+            width: 20%;
+            height: var(--display-block-height);
+            flex-wrap: nowrap;
+            background-color: blue;
+            justify-content: center;
+            align-items: center;
         }
     </style>
 </head>
+
 <body>
-    
-    <!-- <canvas id="gameCanvas" width="480" height="320"></canvas> -->
-    <div>
-        <table id="status-display">
-            <tr>
-                <td id="level-legend">
-                    level
-                </td>
-                <td id="level-value">
-                    1
-                </td>
-            </tr>
-            <tr>
-                <td id="hp-legend">
-                    hp
-                </td>
-                <td id="hp-value">
-                    0
-                </td>
-            </tr>
-            <tr>
-                <td id="ammo-legend">
-                    ammo
-                </td>
-                <td id="ammo-value">
-                    0
-                </td>
-            </tr>
+    <div class="game-container">
+        <div class="status-display">
+            <table>
+                <tr>
+                    <td id="level-legend">
+                        level
+                    </td>
+                    <td id="level-value">
+                        1
+                    </td>
+                </tr>
+                <tr>
+                    <td id="hp-legend">
+                        hp
+                    </td>
+                    <td id="hp-value">
+                        0
+                    </td>
+                </tr>
+                <tr>
+                    <td id="ammo-legend">
+                        ammo
+                    </td>
+                    <td id="ammo-value">
+                        0
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="main-display">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+        </div>
+        <div class="button-display">
+            <button id="btn-start">Start</button>
+        </div>
     </div>
-    <canvas id="gameCanvas" width="640" height="480"></canvas>
-    <button id="btn-start">Start</button>
-    <script src="game.js"></script>
+    <script type="module" src="game.js"></script>
     <!-- <script src="good-move-player.js"></script> -->
-    <!-- <script src="shooting.js"></script> -->
+    <!-- <script type="module" src="utils.js"></script> -->
 </body>
+
 </html>
