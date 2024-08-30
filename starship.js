@@ -1,8 +1,12 @@
-import { ammoValue } from './game.js';
+import { ammoValue, blastValue, isPaused, isGame, sound } from './game.js';
 import { keys, onKeyDown, onKeyUp } from './keys.js';
+import { toReduceSound } from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+
+const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
+const laserShot = new Audio('./sounds/laser-shot.mp3');
 
 let blinkInterval;
 
@@ -14,7 +18,6 @@ const starship = {
     color: 'lightblue',
     dx: 5,                      // move step by X
     dy: 5,                      // move step by Y
-
     //drawinhg
     flameWidth: 10,
     flameHeight: 3,
@@ -27,21 +30,31 @@ const starship = {
     colorCockpit: 'blue',
 
     hp: 2,
-    ammo: 10,
+    ammo: 400,
+    blast: 1
 };
 
 function drawStarshipFuselage() {
     ctx.fillStyle = starship.colorFuselage;
-    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.widthFuselage / 2)), starship.y + starship.height / 2, starship.widthFuselage, starship.heightFuselage);
+    ctx.fillRect(   starship.x + ((starship.width / 2) - (starship.widthFuselage / 2)), 
+                    starship.y + starship.height / 2, 
+                    starship.widthFuselage, 
+                    starship.heightFuselage);
 }
 
 function drawStarshipCockpit() {
     ctx.fillStyle = starship.colorCockpit;
-    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.widthCockpit / 2)), starship.y + starship.height / 2.5, starship.widthCockpit, starship.heightCockpit);
+    ctx.fillRect(   starship.x + ((starship.width / 2) - (starship.widthCockpit / 2)), 
+                    starship.y + starship.height / 2.5, 
+                    starship.widthCockpit, 
+                    starship.heightCockpit);
 }
 function drawStarshipFlame() {
     ctx.fillStyle = starship.flameColor;
-    ctx.fillRect(starship.x + ((starship.width / 2) - (starship.flameWidth / 2)), starship.y + starship.height, starship.flameWidth, starship.flameHeight);
+    ctx.fillRect(   starship.x + ((starship.width / 2) - (starship.flameWidth / 2)), 
+                    starship.y + starship.height, 
+                    starship.flameWidth, 
+                    starship.flameHeight);
 }
 
 function drawStarship() {
@@ -53,9 +66,12 @@ function drawStarship() {
 
     ctx.beginPath();
     ctx.fillStyle = starship.color;
-    ctx.moveTo(starship.x + starship.width / 2, starship.y); // top
-    ctx.lineTo(starship.x, starship.y + starship.height);    // left
-    ctx.lineTo(starship.x + starship.width, starship.y + starship.height); // right
+    ctx.moveTo( starship.x + starship.width / 2, 
+                starship.y);                        // top
+    ctx.lineTo( starship.x, 
+                starship.y + starship.height);      // left
+    ctx.lineTo( starship.x + starship.width, 
+                starship.y + starship.height);      // right
     ctx.closePath();
     ctx.fill();
 
@@ -165,19 +181,21 @@ function updateBullet(bullet, index) {
 }
 
 function Shot(event) {
-    if (event.key === ' ' && bullets.length < 5 && starship.ammo > 0) {  // Check if the spacebar is pressed
-        const newBullet = {
-            width: 4,
-            height: 8,
-            x: starship.x + starship.width / 2 - 2,
-            y: starship.y,
-            color: 'blue',
-            speed: 10
-        };
-        bullets.push(newBullet); // Add the new bullet to the array
-        console.log('Bullet shot');
-        starship.ammo--;
-        ammoValue.innerText = starship.ammo;
+    if (!isPaused && keys.Space) {
+        if (event.key === ' ' && bullets.length < 5 && starship.ammo > 0) {  // Check if the spacebar is pressed
+            const newBullet = {
+                width: 4,
+                height: 8,
+                x: starship.x + starship.width / 2 - 2,
+                y: starship.y,
+                color: 'blue',
+                speed: 10
+            };
+            if (sound) { toReduceSound(laserShot, 0.4) };
+            bullets.push(newBullet); // Add the new bullet to the array
+            starship.ammo--;
+            ammoValue.innerText = starship.ammo;
+        }
     }
 }
 
@@ -189,3 +207,25 @@ export {
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
+
+// blast
+
+function Blast(objects) {
+    if (isGame && !isPaused && starship.blast > 0) {
+        if (sound) { blastExplosion.play() };
+        objects.length = 0;
+        canvas.style.backgroundColor = 'white';
+        // blinkInterval = setInterval(() => {
+        //     canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
+        // }, 150);
+        setTimeout(() => {   
+            clearInterval(blinkInterval);
+            canvas.style.backgroundColor = '#000';
+        }, 2000);
+
+    };
+}
+
+export {
+    Blast
+};

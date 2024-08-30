@@ -1,4 +1,4 @@
-import { ammoValue, hpValue } from './game.js';
+import { ammoValue, blastValue, hpValue } from './game.js';
 
 import {
     starship,
@@ -57,10 +57,10 @@ function checkHpCollision(packs) {                   // objects intersection
         ) {
             starship.hp++;                          // grow hp
             hpValue.innerText = starship.hp;        // show in display
-            startBlinkingHp();                      // blinking effect
-            setTimeout(() => {
-                stopBlinkingHp();                   // stop blinking
-            }, 1000);                               // 1 sec blinking duration
+            // startBlinkingHp();                      // blinking effect
+            // setTimeout(() => {
+            //     stopBlinkingHp();                   // stop blinking
+            // }, 500);                                // 0.5 sec blinking duration
             hpPackArray.splice(i, 1);               // removing objects
         }
     }
@@ -121,10 +121,10 @@ function checkAmmoCollision(packs) {                    // objects intersection
         ) {
             starship.ammo+=10;                            // grow hp
             ammoValue.innerText = starship.ammo;        // show in display
-            startBlinkingAmmo();                        // blinking effect
-            setTimeout(() => {
-                stopBlinkingAmmo();                     // stop blinking
-            }, 1000);                                   // 1 sec blinking duration
+            // startBlinkingAmmo();                        // blinking effect
+            // setTimeout(() => {
+            //     stopBlinkingAmmo();                     // stop blinking
+            // }, 500);                                // 0.5 sec blinking duration
             ammoPackArray.splice(i, 1);                 // removing objects
         }
     }
@@ -136,4 +136,74 @@ export {
     createAmmoPack,
     updateAmmoPack,
     checkAmmoCollision
+};
+
+// BLAST
+
+const blastPackArray = [];
+
+function drawBlastPack(blastPack) {                                 // drawing object
+    ctx.fillStyle = blastPack.color;                                // set color
+    ctx.fillRect(   blastPack.x,                                    // draw rectangle
+                    blastPack.y,
+                    blastPack.width,
+                    blastPack.height);                              
+    
+    ctx.fillStyle = 'yellow';                                       // text color
+    ctx.font = 'bold 12px Arial';                                   // style and size
+    ctx.textAlign = 'center';                                       // text to center
+    ctx.textBaseline = 'middle';                                    // text vertically to the center
+    ctx.fillText(   'BLAST',                                        // text
+                    blastPack.x + blastPack.width / 2, 
+                    blastPack.y + blastPack.height / 2);
+}
+
+function createBlastPack() {
+    const blastPack = {                                 // create object
+        x: Math.random() * (canvas.width - 30),         // start position horizontally
+        y: 30,                                          // start position vertically
+        width: 40,                                      // object size (width)
+        height: 25,                                     // object size (height)
+        color: 'tomato',                                // object color
+        speed: 4                                        // object speed (movement rate)
+    }
+    blastPackArray.push(blastPack);                     // add to array
+}
+
+function updateBlastPack() {                            // updating object data
+    blastPackArray.forEach((blastPack, index) => {
+        blastPack.y += blastPack.speed;                 // moving dawn
+        // blastPack.x -= blastPack.speed;                 // moving left;            
+        if (blastPack.y > canvas.height) {              // if edge
+            blastPackArray.splice(index, 1);            // remove from array
+        }
+    });
+}
+
+function checkBlastCollision(packs) {                   // objects intersection
+    for (let i = 0; i < packs.length; i++) {
+        const pack = packs[i];
+        if (
+            pack.x < starship.x + starship.width &&     // pack is to left
+            pack.x + pack.width > starship.x &&         // pack is to right
+            pack.y < starship.y + starship.height &&    // pack is above of starship
+            pack.y + pack.height > starship.y           // pack is below of starship
+        ) {
+            starship.blast ++;                          // grow hp
+            blastValue.innerText = starship.blast;      // show in display
+            // startBlinkingHp();                       // blinking effect
+            // setTimeout(() => {
+            //     stopBlinkingHp();                    // stop blinking
+            // }, 500);                                 // 0.5 sec blinking duration
+            blastPackArray.splice(i, 1);                // removing objects
+        }
+    }
+}
+
+export {
+    blastPackArray,
+    drawBlastPack,
+    createBlastPack,
+    updateBlastPack,
+    checkBlastCollision
 };
