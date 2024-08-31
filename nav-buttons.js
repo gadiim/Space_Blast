@@ -1,60 +1,76 @@
-import { sound } from './game.js';
+import { mainTheme } from './game.js';
+
+export let darkMode = true;
+export let sound = true;//false
+export let music = true;//true
+
+// main container
+const gameContainer = document.getElementsByClassName('game-container')[0]; // reference to the first element of the collection
+// status display // right
+const statusDisplay = document.getElementsByClassName('status-display')[0]; // reference to the first element of the collection
+const cell = document.querySelectorAll('.status-display table tr td:last-of-type');
+// canvas
+// const canvas = document.getElementsByTagName('canvas')[0];
+const canvas = document.getElementById('gameCanvas');
+// buttons
+const buttons = document.querySelectorAll('.button-display button');
+const buttonDarkMode = document.getElementById('btn-dark-mode');
+const buttonSoundMode = document.getElementById('btn-sound-mode');
+const buttonMusicMode = document.getElementById('btn-music-mode');
+const buttonDifficultMode = document.getElementById('btn-difficult-mode');
+const buttonStart = document.getElementById('btn-start');
+const buttonPause = document.getElementById('btn-pause');
+const buttonNewGame = document.getElementById('btn-new-game');
+const buttonExitGame = document.getElementById('btn-exit-game');
+
+export function toggleDark() {
+// if (sound) { clickButton.play() };
+    darkMode = !darkMode;
+// main container
+    gameContainer.style.backgroundColor = darkMode ?
+        'var(--main-background-color-dark-mode)' :
+        'var(--main-background-color-light-mode)'
+// status display // right
+    statusDisplay.style.color = darkMode ?
+        'var(--text-color-dark-mode)' :
+        'var(--text-color-light-mode)'
+    cell.forEach(c => {
+        c.style.backgroundColor = darkMode ?
+        'var(--cell-background-color-dark-mode)' :
+        'var(--cell-background-color-light-mode)';
+    });
+// canvas
+    canvas.style.backgroundColor = darkMode ?
+        'var(--canvas-background-color-dark-mode)' :
+        'var(--canvas-background-color-light-mode)';
+    canvas.style.borderColor= darkMode ?
+        'var(--canvas-border-color-dark-mode)' :
+        'var(--canvas-border-color-light-mode)';
+// buttons
+    buttonDarkMode.innerText = darkMode ?
+        'light mode' :
+        'dark mode';
+    buttons.forEach(b => {
+        b.style.backgroundColor = darkMode ?
+            'var(--button-background-color-dark-mode)' :
+            'var(--button-background-color-light-mode)';
+        b.style.color = darkMode ?
+            'var(--button-text-color-dark-mode)' :
+            'var(--button-text-color-light-mode)';
+    });
+}
+
+export function toggleSound() {
+    // if (sound) { clickButton.play() };
+    sound = !sound;
+    buttonSoundMode.innerText = sound ? 'sound on' : 'sound off';
+};
 
 
-// export function toggleDark(buttonDarkMode, buttons) {
-
-// //     let bodyDark = document.getElementsByTagName('html')[0];
-// //     let startMenu = document.getElementById('startMenu');
-  
-// //     buttonDarkMode.addEventListener('click', () => {
-  
-// //       if (sound) { clickButton.play() };
-  
-// //       if (mode) {
-// //         buttonDarkMode.innerText = 'light mode';
-// //         bodyDark.style.backgroundColor = 'var(--main-dark-backgroundColor)';
-// //         bodyDark.style.color = 'var(--main-dark-textColor)';
-// //         startMenu.style.backgroundColor = 'var(--main-light-textColor)';
-// //         for (let i = 0; i < 9; i++) {
-// //           buttons[i].style.backgroundColor = 'var(--button-dark-backgroundColor';
-// //           buttons[i].style.color = 'var(--main-dark-textColor)';
-// //         }
-// //         mode = false;
-// //       }
-// //       else {
-// //         buttonDarkMode.innerText = 'dark mode';
-// //         bodyDark.style.backgroundColor = '';
-// //         bodyDark.style.color = '';
-// //         startMenu.style.backgroundColor = '';
-// //         for (let i = 0; i < 9; i++) {
-// //           buttons[i].style.backgroundColor = '';
-// //           buttons[i].style.color = 'var(--main-light-textColor)';
-// //         }
-// //         mode = true;
-// //       }
-// //     })
-// }
-
-// export function toggleSound() {
-//     let buttonSoundMode = document.getElementById('btn-sound-mode'); 
-//     buttonSoundMode.addEventListener('click', () => {
-//         // clickButton.play();
-//         sound = !sound;
-//         buttonSoundMode.innerText = sound ? 'sound on' : 'sound off';
-//         console.log('toggleSound');
-        
-//     });
-// }
-
-
-// export function toggleMusic(buttonMusicMode) {
-//     // buttonMusicMode.addEventListener('click', () => {
-
-//         // if (sound) { clickButton.play() };
-
-//     //     music = !music;
-//     //     buttonMusicMode.innerText = music ? 'music on' : 'music off';
-//     //     music ? mainTheme.play() : mainTheme.pause();
-//     // });
-// }
+export function toggleMusic() {
+    // if (sound) { clickButton.play() };
+    music = !music;
+    buttonMusicMode.innerText = music ? 'music on' : 'music off';
+    // music ? mainTheme.play() : mainTheme.pause();
+}
 

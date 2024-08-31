@@ -1,5 +1,6 @@
-import { ammoValue, blastValue, isPaused, isGame, sound } from './game.js';
+import { ammoValue, blastValue, isPaused, isGame } from './game.js';
 import { keys, onKeyDown, onKeyUp } from './keys.js';
+import { sound, music, darkMode, toggleDark, toggleSound, toggleMusic } from './nav-buttons.js';
 import { toReduceSound } from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
@@ -30,7 +31,7 @@ const starship = {
     colorCockpit: 'blue',
 
     hp: 2,
-    ammo: 400,
+    ammo: 10,
     blast: 1
 };
 
@@ -218,9 +219,11 @@ function Blast(objects) {
         // blinkInterval = setInterval(() => {
         //     canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
         // }, 150);
-        setTimeout(() => {   
+        setTimeout(() => {
             clearInterval(blinkInterval);
-            canvas.style.backgroundColor = '#000';
+            canvas.style.backgroundColor = darkMode ?
+                'var(--canvas-background-color-dark-mode)' :
+                'var(--canvas-background-color-light-mode)';
         }, 2000);
 
     };

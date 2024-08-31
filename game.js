@@ -53,6 +53,7 @@ import {
     updateAsteroids
 } from './obstacles.js';
 
+import { sound, music, darkMode, toggleDark, toggleSound, toggleMusic } from './nav-buttons.js';
 
 import { keys } from './keys.js';
 import { BinaryRandom, Random, toReduceSound, toLoopMusic } from './utils.js';
@@ -61,9 +62,9 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 
-const damageCrash = new Audio('./sounds/damage-crash.mp3');
+export const damageCrash = new Audio('./sounds/damage-crash.mp3');
 // const mainTheme = new Audio('./sounds/space-adventure.mp3');
-const mainTheme = new Audio('./sounds/space-line.mp3');
+export const mainTheme = new Audio('./sounds/space-line.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -71,8 +72,9 @@ export let isPaused = false;
 export let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
 export let isInvulnerable = false;
 
-export let sound = true;//false
-export let music = true;//true
+// export let darkMode = true;
+// export let sound = true;//false
+// export let music = true;//true
 
 // let blinkInterval;
 
@@ -296,26 +298,28 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'p') {
         pauseGame();
+        console.log('pauseGame');
     }
 });
 
 document.addEventListener('keydown', (event) => {
+    if (event.key === 'd') {
+        toggleDark();
+        console.log('toggleDark');
+    }
+});   
+
+document.addEventListener('keydown', (event) => {
     if (event.key === 's') {
-        // toggleSound();
-        const buttonSoundMode = document.getElementById('btn-sound-mode');
-        sound = !sound;
-        buttonSoundMode.innerText = sound ? 'sound on' : 'sound off';
+        toggleSound();       
         console.log('toggleSound');
     }
 });
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'm') {
-        // toggleMusic();
-                // if (sound) { clickButton.play() };
-        const buttonMusicMode = document.getElementById('btn-music-mode');
-        music = !music;
-        buttonMusicMode.innerText = music ? 'music on' : 'music off';
-        music ? mainTheme.play() : mainTheme.pause();  
+        toggleMusic(); 
+        music ? mainTheme.play() : mainTheme.pause();
         console.log('toggleMusic'); 
     }
 });
@@ -344,6 +348,5 @@ function exitGame() {
 }
 const btnExitGame = document.getElementById('btn-exit-game');
 btnExitGame.onclick = () => { exitGame() };
-
 
 
