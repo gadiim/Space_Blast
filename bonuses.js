@@ -19,7 +19,7 @@ function drawHpPack(hpPack) {                                       // drawing o
     ctx.fillStyle = hpPack.color;                                   // set color
     ctx.fillRect(hpPack.x, hpPack.y, hpPack.width, hpPack.height);  // draw rectangle
     ctx.fillStyle = 'tomato';                                       // text color
-    ctx.font = 'bold 18px Arial';                                   // style and size
+    ctx.font = 'bold 20px Pixelify Sans';                                   // style and size
     ctx.textAlign = 'center';                                       // text to center
     ctx.textBaseline = 'middle';                                    // text vertically to the center
     ctx.fillText('HP', hpPack.x + hpPack.width / 2, hpPack.y + hpPack.height / 2);//text
@@ -83,7 +83,7 @@ function drawAmmoPack(ammoPack) {                                       // drawi
     ctx.fillRect(ammoPack.x, ammoPack.y, ammoPack.width, ammoPack.height);  // draw rectangle
     
     ctx.fillStyle = 'blue';                                       // text color
-    ctx.font = 'bold 12px Arial';                                   // style and size
+    ctx.font = '14px Pixelify Sans';                                   // style and size
     ctx.textAlign = 'center';                                       // text to center
     ctx.textBaseline = 'middle';                                    // text vertically to the center
     ctx.fillText('AMMO', ammoPack.x + ammoPack.width / 2, ammoPack.y + ammoPack.height / 2);//text
@@ -150,7 +150,7 @@ function drawBlastPack(blastPack) {                                 // drawing o
                     blastPack.height);                              
     
     ctx.fillStyle = 'yellow';                                       // text color
-    ctx.font = 'bold 12px Arial';                                   // style and size
+    ctx.font = '14px Pixelify Sans';                                   // style and size
     ctx.textAlign = 'center';                                       // text to center
     ctx.textBaseline = 'middle';                                    // text vertically to the center
     ctx.fillText(   'BLAST',                                        // text

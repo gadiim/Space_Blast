@@ -27,7 +27,7 @@ export function onKeyDown(event) {                             // key down event
         keys.ArrowDown = true;
     } else if (event.key === ' ') {  // spacebar
         keys.Space = true;
-    } else if (event.key === 'Enter' && !isGame) {
+    } else if (event.key === 'Enter' && isGame) {
         keys.Enter = true;
     } else if (event.key === 'p') {
         keys.p = true;

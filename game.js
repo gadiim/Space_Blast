@@ -63,8 +63,8 @@ const ctx = canvas.getContext('2d');
 
 
 export const damageCrash = new Audio('./sounds/damage-crash.mp3');
-// const mainTheme = new Audio('./sounds/space-adventure.mp3');
-export const mainTheme = new Audio('./sounds/space-line.mp3');
+export const mainTheme = new Audio('./sounds/space-adventure.mp3');
+// export const mainTheme = new Audio('./sounds/space-line.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -151,9 +151,12 @@ function checkCollisions() {
             isInvulnerable = true;                              // activate invulnerability
             return;                                             // skip collision
         } else {
+            starship.hp--;                                      // less hp
+            hpValue.innerText = starship.hp;                    // show in display
             isGameOver = true;
             clearInterval(gameInterval);
-            alert("Game Over!");
+            // alert("Game Over!");
+
             isGame = false;
         }
     }
@@ -164,15 +167,18 @@ function checkCollisions() {
 // background first!!!!
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);   // clear screen
-    starsTiny.forEach(drawTinyStar);                    // draw stars
-    starsLarge.forEach(drawLargeStar);                  // draw stars
-    asteroids.forEach(drawAsteroid);                    // draw asteroids
-    comets.forEach(drawComet);                          // draw comets
-    bullets.forEach(drawBullet);                        // draw all bullets in the array
-    drawStarship();                                     // draw starship
-    hpPackArray.forEach(drawHpPack);                    // draw HP
-    ammoPackArray.forEach(drawAmmoPack);                // draw ammo
-    blastPackArray.forEach(drawBlastPack);                // draw ammo
+    if (isGame) {
+        starsTiny.forEach(drawTinyStar);                    // draw stars
+        starsLarge.forEach(drawLargeStar);                  // draw stars
+        asteroids.forEach(drawAsteroid);                    // draw asteroids
+        comets.forEach(drawComet);                          // draw comets
+        bullets.forEach(drawBullet);                        // draw all bullets in the array
+        drawStarship();                                     // draw starship
+        hpPackArray.forEach(drawHpPack);                    // draw HP
+        ammoPackArray.forEach(drawAmmoPack);                // draw ammo
+        blastPackArray.forEach(drawBlastPack);              // draw blast
+    }                
+    
 }
 
 
@@ -187,7 +193,7 @@ function update() {                                     // update positions
         updateAmmoPack();                               // update ammo
         updateBlastPack();                              // update blast
         bullets.forEach(updateBullet);                  // update bullets
-    
+
         checkCollisions();                              // check collisions
         checkCrashTarget(asteroids, bullets);
         checkHpCollision(hpPackArray);
@@ -195,13 +201,16 @@ function update() {                                     // update positions
         checkBlastCollision(blastPackArray);
 
         draw();                                         // draw everything
+
     }
+    
+
 }
 
 // Start game
 function startGame() {
     if (!isGame) {
-        if (music) { toLoopMusic( mainTheme ) };
+        if (music) { toLoopMusic(mainTheme) };
         isGame = true;
         createHpPack();
         createAmmoPack();
@@ -220,33 +229,16 @@ function startGame() {
             if (Math.random() < 0.03) {  // 3% chance to create an Comet
                 createComet();
             }
+            if (!isGame) {
+                ctx.fillStyle = 'white';
+                ctx.font = '44px Pixelify Sans';
+                ctx.textAlign = 'center'
+                ctx.fillText("GAME OVER!", 320, 240);
+            }
         }, 50);  // Update every 50 milliseconds
-// nav buttons
-
-const buttonSoundMode = document.getElementById('btn-sound-mode');
-const buttonMusicMode = document.getElementById('btn-music-mode');
-
-// function toggleSound() {
-
-//         // clickButton.play();
-//         sound = !sound;
-//         buttonSoundMode.innerText = sound ? 'sound on' : 'sound off';
-//         console.log('toggleSound');       
-// }
-// function toggleMusic() {
-
-
-//         // if (sound) { clickButton.play() };
-
-//         music = !music;
-//         buttonMusicMode.innerText = music ? 'music on' : 'music off';
-//         music ? mainTheme.play() : mainTheme.pause();  
-//         console.log('toggleMusic'); 
-// }
-
-
-
+        
     }
+    
 }
 
 export function pauseGame() {

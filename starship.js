@@ -30,7 +30,7 @@ const starship = {
     heightCockpit: 10,
     colorCockpit: 'blue',
 
-    hp: 2,
+    hp: 1,
     ammo: 10,
     blast: 1
 };
@@ -182,7 +182,7 @@ function updateBullet(bullet, index) {
 }
 
 function Shot(event) {
-    if (!isPaused && keys.Space) {
+    if (isGame && !isPaused && keys.Space) {
         if (event.key === ' ' && bullets.length < 5 && starship.ammo > 0) {  // Check if the spacebar is pressed
             const newBullet = {
                 width: 4,
