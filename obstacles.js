@@ -41,7 +41,8 @@ function createComet() {                                                        
         y: choiceY,                                                                 // start position vertically
         radius: 20,                                                                 // object size
         color: choiceColor,                                                         // object color
-        speed: choiceSpeed,                                                         // object speed (movement rate)
+        speed: choiceSpeed,
+        pts: 1,                                                         // object speed (movement rate)
     }
     comets.push(comet);                                                             // add to array
 }
@@ -98,7 +99,8 @@ function createAsteroid() {
                     y: 0,                                               // start position vertically
                     color: randomColor,                                 // object color
                     radius: randomSize,                                 // object size
-                    speed: randomSpeed});                               // object speed (movement rate)                                    
+                    speed: randomSpeed,                                 // object speed (movement rate)
+                    pts: 1,});                                          // petitions                                                                  
 }
 
 function updateAsteroids() {                                            // updating object data  

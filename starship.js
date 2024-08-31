@@ -1,13 +1,25 @@
-import { ammoValue, blastValue, isPaused, isGame } from './game.js';
+import {
+    ammoValue,
+    blastValue,
+    isPaused,
+    isGame,
+    blastExplosion,
+    laserShot,
+    score,
+    Scores 
+} from './game.js';
 import { keys, onKeyDown, onKeyUp } from './keys.js';
-import { sound, music, darkMode, toggleDark, toggleSound, toggleMusic } from './nav-buttons.js';
+import { 
+    sound,
+    music, 
+    darkMode
+} from './nav-buttons.js';
 import { toReduceSound } from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
-const laserShot = new Audio('./sounds/laser-shot.mp3');
+
 
 let blinkInterval;
 
@@ -213,12 +225,19 @@ export {
 
 function Blast(objects) {
     if (isGame && !isPaused && starship.blast > 0) {
-        if (sound) { blastExplosion.play() };
-        objects.length = 0;
+        if (sound) { 
+            blastExplosion.currentTime = 1.5;
+            blastExplosion.play() 
+        };
+
+        for (let ob = objects.length - 1; ob >= 0; ob--) {      // for all objects
+            const object = objects[ob];
+            Scores (object.pts);                                // score counter
+        }
+
+        objects.length = 0;                                     // delete all obstacles
         canvas.style.backgroundColor = 'white';
-        // blinkInterval = setInterval(() => {
-        //     canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
-        // }, 150);
+
         setTimeout(() => {
             clearInterval(blinkInterval);
             canvas.style.backgroundColor = darkMode ?

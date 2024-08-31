@@ -53,7 +53,7 @@ export function onKeyUp(event) {// key up event
         keys.ArrowDown = false;
     } else if (event.key === ' ') {
         keys.Space = false;
-    } else if (event.key === 'Enter') {
+    } else if (event.key === 'Enter'  && !isGame) {
         keys.Enter = false;
     } else if (event.key === 'p') {
         keys.p = false;

@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
@@ -82,7 +85,7 @@
         }
         .status-display table tr td:last-of-type {
             text-align: right;
-            min-width: 25%;
+            width: 30%;
             background-color: var(--cell-background-color-dark-mode);
         }
 
@@ -138,6 +141,14 @@
         <div class="status-display">
             <table>
                 <tr>
+                    <td id="score-legend">
+                        score
+                    </td>
+                    <td id="score-value">
+                        0
+                    </td>
+                </tr>
+                <tr>
                     <td id="level-legend">
                         level
                     </td>
@@ -180,9 +191,9 @@
             <button id="btn-sound-mode" disabled>sound on</button>
             <button id="btn-music-mode" disabled>music on</button>
             <button id="btn-difficult-mode" disabled>difficult</button>
-            <button id="btn-start" >start</button>
+            <button id="btn-start" disabled>start</button>
             <button id="btn-pause" disabled>pause off</button>
-            <button id="btn-new-game" disabled>new game</button>
+            <button id="btn-new-game" >new game</button>
             <button id="btn-exit-game" >exit</button>
         </div>
     </div>

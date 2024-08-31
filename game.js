@@ -53,7 +53,15 @@ import {
     updateAsteroids
 } from './obstacles.js';
 
-import { sound, music, darkMode, toggleDark, toggleSound, toggleMusic } from './nav-buttons.js';
+import {
+    darkMode,
+    sound,
+    music,
+    toggleDark,
+    toggleSound,
+    toggleMusic,
+    togglePause
+} from './nav-buttons.js';
 
 import { keys } from './keys.js';
 import { BinaryRandom, Random, toReduceSound, toLoopMusic } from './utils.js';
@@ -61,10 +69,13 @@ import { BinaryRandom, Random, toReduceSound, toLoopMusic } from './utils.js';
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+const FPX = 50;
 
+// export const mainTheme = new Audio('./sounds/space-adventure.mp3');
+export const mainTheme = new Audio('./sounds/space-line.mp3');
 export const damageCrash = new Audio('./sounds/damage-crash.mp3');
-export const mainTheme = new Audio('./sounds/space-adventure.mp3');
-// export const mainTheme = new Audio('./sounds/space-line.mp3');
+export const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
+export const laserShot = new Audio('./sounds/laser-shot.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -72,16 +83,24 @@ export let isPaused = false;
 export let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
 export let isInvulnerable = false;
 
+export let score = 0;                   
+export let ammoScore = 0;                   
+export let hpScore = 0;                   
+export let blastScore = 0;                   
+
 // export let darkMode = true;
 // export let sound = true;//false
-// export let music = true;//true
+// export let music = false;//true
 
 // let blinkInterval;
 
-export let ammoValue = document.getElementById('ammo-value');
+export let scoreValue = document.getElementById('score-value');
+export let levelValue = document.getElementById('level-value');
 export let hpValue = document.getElementById('hp-value');
+export let ammoValue = document.getElementById('ammo-value');
 export let blastValue = document.getElementById('blast-value');
 
+// scoreValue.innerText = score;
 hpValue.innerText = starship.hp;
 ammoValue.innerText = starship.ammo;
 blastValue.innerText = starship.blast;
@@ -121,6 +140,7 @@ function checkCrashTarget(objects, bullets) {
                 bullet.y + bullet.height > object.y             // bullet is below
             ) {
                 if (sound) { toReduceSound(damageCrash, 0.4) };
+                Scores (object.pts);                            // score counter
                 objects.splice(ob, 1);                          // remove the object from the array
                 bullets.splice(bu, 1);                          // remove the bullet from the array
                 break;                                          // stop loop since
@@ -153,17 +173,28 @@ function checkCollisions() {
         } else {
             starship.hp--;                                      // less hp
             hpValue.innerText = starship.hp;                    // show in display
-            isGameOver = true;
-            clearInterval(gameInterval);
-            // alert("Game Over!");
+
+            if (sound) {                                        // explosion sound
+                blastExplosion.currentTime = 1;                 // sound beginning from 1st sec
+                blastExplosion.play()
+            };
+            let blinkInterval = setInterval(() => {             // explosion effect
+                canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
+            }, 400);
+            setTimeout(() => {
+                clearInterval(blinkInterval);
+                canvas.style.backgroundColor = 'white';
+            }, 1000);
+
+            clearInterval(gameInterval);                        // stop update chances
 
             isGame = false;
+            isGameOver = true;
         }
     }
 }
 
 
-// Функція для малювання всіх елементів на екрані
 // background first!!!!
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);   // clear screen
@@ -183,7 +214,7 @@ function draw() {
 
 
 function update() {                                     // update positions
-    if (!isGameOver) {                                  // if false
+    if (isGame) {                                       // if true
         updateTinyStars();                              // update stars
         updateLargeStars();                             // update stars
         updateAsteroids();                              // update asteroids2
@@ -203,73 +234,105 @@ function update() {                                     // update positions
         draw();                                         // draw everything
 
     }
-    
 
+}
+
+function updateObjectChances() {                        // update chance to create objects
+
+        if (Math.random() < 1) {                        // 100% chance to create a star
+            createTinyStar();
+        }
+        if (Math.random() < 0.2) {                      // 20% chance to create a star
+            createLargeStar();
+        }
+        if (Math.random() < 0.07) {                    // 7% chance to create an asteroid
+            createAsteroid();
+        }
+        if (Math.random() < 0.03) {                     // 3% chance to create a Comet
+            createComet();
+        }
+}
+
+function screenStartGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.style.backgroundColor = '';
+    ctx.fillStyle = 'white';
+    ctx.font = '45px Pixelify Sans';
+    ctx.textAlign = 'center'
+    ctx.fillText("STAR BLAST", 320, 240);
+}
+
+function screenGameOver() {
+    setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.backgroundColor = '';
+        ctx.fillStyle = 'white';
+        ctx.font = '45px Pixelify Sans';
+        ctx.textAlign = 'center'
+        ctx.fillText("GAME OVER!", 320, 240);
+    }, 1500);
+}
+
+export function Scores (pts) {                  // score counter
+    score += pts;                               // common score counter
+    ammoScore += pts;                           // ammo score counter
+    hpScore += pts;                             // hp score counter
+    blastScore += pts;                          // blast score counter
+    scoreValue.innerText = score;
 }
 
 // Start game
 function startGame() {
+    hpValue.innerText = starship.hp;
+    ammoValue.innerText = starship.ammo;
+    blastValue.innerText = starship.blast;
     if (!isGame) {
         if (music) { toLoopMusic(mainTheme) };
         isGame = true;
-        createHpPack();
-        createAmmoPack();
-        createBlastPack();
+        isGameOver = false;
+
+        createHpPack();                                     // creating ammo pack
+        createAmmoPack();                                   // creating hp pack
+        createBlastPack();                                  // creating blast pack
+
         gameInterval = setInterval(() => {
-            update();  // Update game state
-            if (Math.random() < 6) {  // 600% chance to create a star
-                createTinyStar();
+            update();                                       // update game state
+            updateObjectChances();                          // update chance to create objects
+
+            if (ammoScore % 10 === 0 && ammoScore !== 0) {  // creating ammo pack every ten points
+                createAmmoPack();                           // creating ammo pack
+                ammoScore = 0;                              // reset ammo pack counter
+            }; 
+            if (hpScore % 50 === 0 && hpScore !== 0) {      // creating hp pack every fifty points
+                createHpPack();                             // creating hp pack
+                hpScore = 0;                                // reset hp pack counter
+            }; 
+            if (blastScore % 30 === 0 && blastScore !== 0) {// creating blast pack every fifty points
+                createBlastPack();                          // creating blast pack
+                blastScore = 0;                             // reset blast pack counter
+            }; 
+
+            if (isGameOver && !isGame) {
+                screenGameOver();
             }
-            if (Math.random() < 0.2) {  // 20% chance to create a star
-                createLargeStar();
-            }
-            if (Math.random() < 0.05) {  // 5% chance to create an asteroidS
-                createAsteroid();
-            }
-            if (Math.random() < 0.03) {  // 3% chance to create an Comet
-                createComet();
-            }
-            if (!isGame) {
-                ctx.fillStyle = 'white';
-                ctx.font = '44px Pixelify Sans';
-                ctx.textAlign = 'center'
-                ctx.fillText("GAME OVER!", 320, 240);
-            }
-        }, 50);  // Update every 50 milliseconds
-        
+        }, FPX);  // Update every FPX milliseconds
+ 
     }
-    
 }
 
 export function pauseGame() {
     if (isGame) {
-        if (isPaused) {
-            // Resume the game
+        if (isPaused) {                                 // Resume the game
             gameInterval = setInterval(() => {
-                update();  // Update game state
-                if (Math.random() < 6) {  // 600% chance to create a star
-                    createTinyStar();
-                }
-                if (Math.random() < 0.2) {  // 20% chance to create a star
-                    createLargeStar();
-                }
-                if (Math.random() < 0.05) {  // 5% chance to create an asteroid
-                    createAsteroid();
-                }
-                if (Math.random() < 0.03) {  // 3% chance to create a Comet
-                    createComet();
-                }
-            }, 50);  // Update every 50 milliseconds
+                update();                               // update game state
+                updateObjectChances();                  // update chance to create objects
+            }, FPX);                                    // Update every FPX milliseconds
             isPaused = false;
-
-            const buttonPause = document.getElementById('btn-pause');
-        buttonPause.innerText = isPaused ? 'pause on' : 'pause off';
-        } else {
-            // Pause the game
+            togglePause();
+        } else {                                        // pause the game    
             clearInterval(gameInterval);
             isPaused = true;
-            const buttonPause = document.getElementById('btn-pause');
-            buttonPause.innerText = isPaused ? 'pause on' : 'pause off';
+            togglePause();
         }
     }
 }
@@ -282,7 +345,7 @@ export function pauseGame() {
 
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !isGameOver) {
         startGame();
     }
 });
@@ -290,6 +353,7 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keydown', (event) => {
     if (event.key === 'p') {
         pauseGame();
+        // togglePause();
         console.log('pauseGame');
     }
 });
@@ -332,7 +396,7 @@ document.addEventListener('keydown', (event) => {
 // Start the game
 const btnStart = document.getElementById('btn-start');
 btnStart.onclick = () => { startGame() };
-// startGame();
+
 
 function exitGame() {
     document.body.textContent = 'Thank you for visiting!';
@@ -341,4 +405,23 @@ function exitGame() {
 const btnExitGame = document.getElementById('btn-exit-game');
 btnExitGame.onclick = () => { exitGame() };
 
+// const buttonDarkMode = document.getElementById('btn-dark-mode');
+// buttonDarkMode.onclick = () => { toggleDark() };
 
+const buttonNewGame = document.getElementById('btn-new-game');
+buttonNewGame.onclick = () => { 
+    window.location.reload();
+};
+
+screenStartGame();
+// function gameLoop() {
+//     isGame = false;
+//     isGameOver = false;
+//         screenStartGame();
+    
+
+
+
+
+// }
+// gameLoop();

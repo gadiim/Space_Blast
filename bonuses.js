@@ -119,7 +119,7 @@ function checkAmmoCollision(packs) {                    // objects intersection
             pack.y < starship.y + starship.height &&    // pack is above of starship
             pack.y + pack.height > starship.y           // pack is below of starship
         ) {
-            starship.ammo+=10;                            // grow hp
+            starship.ammo += 10;                            // grow hp
             ammoValue.innerText = starship.ammo;        // show in display
             // startBlinkingAmmo();                        // blinking effect
             // setTimeout(() => {

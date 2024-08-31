@@ -1,9 +1,8 @@
-import { mainTheme } from './game.js';
+import { mainTheme, isGame, isPaused } from './game.js';
 
 export let darkMode = true;
-export let sound = true;//false
+export let sound = false;//false
 export let music = true;//true
-
 // main container
 const gameContainer = document.getElementsByClassName('game-container')[0]; // reference to the first element of the collection
 // status display // right
@@ -19,7 +18,7 @@ const buttonSoundMode = document.getElementById('btn-sound-mode');
 const buttonMusicMode = document.getElementById('btn-music-mode');
 const buttonDifficultMode = document.getElementById('btn-difficult-mode');
 const buttonStart = document.getElementById('btn-start');
-const buttonPause = document.getElementById('btn-pause');
+export const buttonPause = document.getElementById('btn-pause');
 const buttonNewGame = document.getElementById('btn-new-game');
 const buttonExitGame = document.getElementById('btn-exit-game');
 
@@ -74,3 +73,11 @@ export function toggleMusic() {
     // music ? mainTheme.play() : mainTheme.pause();
 }
 
+export function togglePause() {
+    
+//         isPaused = !isPaused;
+//         buttonPause = document.getElementById('btn-pause');
+buttonPause.innerText = isPaused ? 'pause on' : 'pause off';
+//         // if (isPaused) { clearInterval(gameInterval) };
+    
+}
