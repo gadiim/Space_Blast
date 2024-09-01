@@ -12,6 +12,7 @@ export const keys = {
     p: false,
     s: false,
     m: false,
+    n: false,
     d: false,
     '0': false
 };
@@ -35,6 +36,8 @@ export function onKeyDown(event) {                             // key down event
         keys.s = true;
     } else if (event.key === 'm') {
         keys.m = true;
+    } else if (event.key === 'm') {
+        keys.n = true;  
     } else if (event.key === 'd') {
         keys.d = true;
     } else if (event.key === '0') {
@@ -61,6 +64,8 @@ export function onKeyUp(event) {// key up event
         keys.s = false;
     } else if (event.key === 'm') {
         keys.m = false;
+    } else if (event.key === 'm') {
+        keys.n = false;  
     } else if (event.key === 'd') {
         keys.d = false;
     } else if (event.key === '0') {

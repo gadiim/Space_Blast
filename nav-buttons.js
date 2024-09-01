@@ -1,16 +1,21 @@
 import { isPaused } from './game.js';
+// import { updateSetting } from './DBStorage.js';
 
 export let darkMode = true;
 export let sound = true;//false
 export let music = true;//true
+
 // main container
 const gameContainer = document.getElementsByClassName('game-container')[0]; // reference to the first element of the collection
+
 // status display // right
 const statusDisplay = document.getElementsByClassName('status-display')[0]; // reference to the first element of the collection
 const cell = document.querySelectorAll('.status-display table tr td:last-of-type');
+
 // canvas
 // const canvas = document.getElementsByTagName('canvas')[0];
 const canvas = document.getElementById('gameCanvas');
+
 // buttons
 const buttons = document.querySelectorAll('.button-display button');
 const buttonDarkMode = document.getElementById('btn-dark-mode');
@@ -23,8 +28,9 @@ const buttonNewGame = document.getElementById('btn-new-game');
 const buttonExitGame = document.getElementById('btn-exit-game');
 
 export function toggleDark() {
-// if (sound) { clickButton.play() };
     darkMode = !darkMode;
+// savesetting in IndexedDB
+    // updateSetting('toggleDark', darkMode);
 // main container
     gameContainer.style.backgroundColor = darkMode ?
         'var(--main-background-color-dark-mode)' :
@@ -60,24 +66,16 @@ export function toggleDark() {
 }
 
 export function toggleSound() {
-    // if (sound) { clickButton.play() };
     sound = !sound;
     buttonSoundMode.innerText = sound ? 'sound on' : 'sound off';
 };
 
 
 export function toggleMusic() {
-    // if (sound) { clickButton.play() };
     music = !music;
     buttonMusicMode.innerText = music ? 'music on' : 'music off';
-    // music ? mainTheme.play() : mainTheme.pause();
 }
 
 export function togglePause() {
-    
-//         isPaused = !isPaused;
-//         buttonPause = document.getElementById('btn-pause');
-buttonPause.innerText = isPaused ? 'pause on' : 'pause off';
-//         // if (isPaused) { clearInterval(gameInterval) };
-    
+    buttonPause.innerText = isPaused ? 'pause on' : 'pause off';    
 }

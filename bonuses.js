@@ -2,7 +2,6 @@ import {
     ammoValue,
     blastValue,
     hpValue,
-    showMessage,
     collectBonusSound
 } from './game.js';
 
@@ -20,6 +19,9 @@ import {
     darkMode
 } from './nav-buttons.js';
 
+import {
+    showMessage
+} from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');

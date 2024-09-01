@@ -6,15 +6,24 @@ import {
     blastExplosion,
     laserShot,
     score,
-    Scores 
+    Scores
 } from './game.js';
-import { keys, onKeyDown, onKeyUp } from './keys.js';
-import { 
+
+import {
+    keys,
+    onKeyDown,
+    onKeyUp
+} from './keys.js';
+
+import {
     sound,
-    music, 
+    music,
     darkMode
 } from './nav-buttons.js';
-import { toReduceSound } from './utils.js';
+
+import {
+    toReduceSound
+} from './utils.js';
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');

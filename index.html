@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./style.css">
+
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,137 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
     
     <title>Space Blast | Game</title>
-    <style>
 
-        :root {
-            --display-height: 100vh;
-            --display-block-height: 480px;
-            --main-background-color-dark-mode: #212529;
-            --main-background-color-light-mode: #f8f9fa;
-            --canvas-background-color-dark-mode: #000;
-            --canvas-background-color-light-mode: #212529;
-            --canvas-border-color-dark-mode: #f8f9fa;
-            --canvas-border-color-light-mode: #212529;
-            --button-background-color-dark-mode: #495057; /*#343a40*/
-            --button-background-color-light-mode: #adb5bd; /*#ced4da*/
-            --button-text-color-dark-mode: #f8f9fa;
-            --button-text-color-light-mode: #495057;
-            --text-color-dark-mode: #f8f9fa;
-            --text-color-light-mode: #495057;
-            --cell-background-color-dark-mode: #343a40; 
-            --cell-background-color-light-mode: #e9ecef; 
-        }
-
-        html,
-        body {
-            margin: 0;
-            font-family: "Pixelify Sans", sans-serif;
-            /* font-family: "Handjet", sans-serif; */
-            display: block;
-            text-align: center;
-            /* display: flex;
-            flex-wrap: nowrap;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: rgb(25, 25, 25); */
-        }
-
-        canvas {
-            background-color: var(--canvas-background-color-dark-mode);
-            border: 1px solid var(--canvas-border-color-dark-mode);
-        }
-        
-        .game-container {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: center;
-            align-items: center;
-            height: var(--display-height);
-            background-color: var(--main-background-color-dark-mode);          
-        }
-
-        .status-display {
-            display: flex;
-            width: 20%;
-            height: var(--display-block-height);
-            flex-wrap: nowrap;
-            /* background-color: red; */
-            color: var(--text-color-dark-mode);
-            justify-content: center;
-            align-items:start;
-            font-size: xx-large; 
-        }
-        .status-display table {
-            width: 100%;
-            margin: 10px 20px;
-        }
-
-        .status-display table tr td:first-of-type {
-            text-align: left;
-            width: auto;
-            /* background-color: blue; */
-        }
-        .status-display table tr td:last-of-type {
-            text-align: right;
-            width: 30%;
-            background-color: var(--cell-background-color-dark-mode);
-        }
-
-        .main-display {
-            display: flex;
-            width: auto;
-            height: auto;
-            flex-wrap: nowrap;
-        }
-        
-        #message {
-            position: fixed;
-            top: 15%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 45px;
-            color: white;
-            z-index: 1; /* Впевніться, що він поверх канвасу */
-            display: none; /* Спочатку не відображати */
-        }
-        .button-display {
-            display: flex;
-            flex-direction: column;
-            width: 20%;
-            height: var(--display-block-height);
-            flex-wrap: nowrap;
-            /* background-color: blue; */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .button-display button {
-            width: 75%;
-            height: 75%;
-            margin: 10px;
-            background-color: var(--button-background-color-dark-mode);
-            font-family: "Pixelify Sans", sans-serif;
-            color: var(--button-text-color-dark-mode);
-            font-size: larger; 
-        }
-
-        /* #btn-dark-mode,
-        #btn-sound-mode {
-            width: 75%;
-            height: 75%;
-            margin: 10px;
-            background-color: var(--button-background-color-dark-mode);
-            font-family: "Pixelify Sans", sans-serif;
-            color: var(--button-text-color-dark-mode);
-            font-size: larger; 
-        } */
-
-        .button-display button:hover {
-            opacity: 0.7;
-        }
-
-    </style>
 </head>
 
 <body>
@@ -190,6 +62,80 @@
                     </td>
                 </tr>
             </table>
+            <table id="tutorial" style="width: 100%;">
+                <tr>
+                    <td style="width: 30%;">
+                        ← / →
+                    </td>
+                    <td style="width: 70%;">
+                        Left / Right
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        ↑ / ↓
+                    </td>
+                    <td style="width: 70%;">
+                        Up / Down
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        Space
+                    </td>
+                    <td style="width: 70%;">
+                        Shoot
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        0 
+                    </td>
+                    <td style="width: 70%;">
+                        Blast
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        P 
+                    </td>
+                    <td style="width: 70%;">
+                        pause
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        D 
+                    </td>
+                    <td style="width: 70%;">
+                        Dark mode
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        S 
+                    </td>
+                    <td style="width: 70%;">
+                        Sound
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        M 
+                    </td>
+                    <td style="width: 70%;">
+                        Music
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">
+                        N 
+                    </td>
+                    <td style="width: 70%;">
+                        new Game
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="main-display">
             <div id="message" style="display: none;">
@@ -199,14 +145,14 @@
         </div>
         <div class="button-display">
             
-            <button id="btn-dark-mode" >dark mode</button>
-            <button id="btn-sound-mode" disabled>sound on</button>
-            <button id="btn-music-mode" disabled>music on</button>
+            <button id="btn-dark-mode"      disabled>dark mode</button>
+            <button id="btn-sound-mode"     disabled>sound on</button>
+            <button id="btn-music-mode"     disabled>music on</button>
             <button id="btn-difficult-mode" disabled>difficult</button>
-            <button id="btn-start" disabled>start</button>
-            <button id="btn-pause" disabled>pause off</button>
-            <button id="btn-new-game" >new game</button>
-            <button id="btn-exit-game" >exit</button>
+            <button id="btn-start"          disabled>start</button>
+            <button id="btn-pause"          disabled>pause off</button>
+            <button id="btn-new-game"               >new game</button>
+            <button id="btn-exit-game"              >exit</button>
         </div>
     </div>
     <script type="module" src="game.js"></script>

@@ -64,14 +64,23 @@ import {
 } from './nav-buttons.js';
 
 import { keys } from './keys.js';
-import { BinaryRandom, Random, toReduceSound, toLoopMusic } from './utils.js';
 
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+// import { updateSetting } from './DBStorage.js';
 
-let FPX = 55;
+import {
+    BinaryRandom,
+    Random,
+    toReduceSound,
+    toLoopMusic,
+    showMessage
+} from './utils.js';
 
-// export const mainTheme = new Audio('./sounds/space-adventure.mp3');
+export const canvas = document.getElementById('gameCanvas');
+export const ctx = canvas.getContext('2d');
+
+export let FPX = 55;
+
+export const startTheme = new Audio('./sounds/space-adventure.mp3');
 export const mainTheme = new Audio('./sounds/space-line.mp3');
 export const damageCrash = new Audio('./sounds/damage-crash.mp3');
 export const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
@@ -79,6 +88,7 @@ export const laserShot = new Audio('./sounds/laser-shot.mp3');
 export const starshipCrash = new Audio('./sounds/starship-crash.mp3');
 export const levelUpSound = new Audio('./sounds/level-up.mp3');
 export const collectBonusSound = new Audio('./sounds/collect-bonus.mp3');
+export const clickButtonSound = new Audio('./sounds/click-button.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -91,12 +101,6 @@ export let levelScore = 0;
 export let ammoScore = 0;                   
 export let hpScore = 0;                   
 export let blastScore = 0;                   
-
-// export let darkMode = true;
-// export let sound = true;//false
-// export let music = false;//true
-
-// let blinkInterval;
 
 export let scoreValue = document.getElementById('score-value');
 export let levelValue = document.getElementById('level-value');
@@ -112,9 +116,9 @@ blastValue.innerText = starship.blast;
 
 
 ///////////////////////////////////////////
+// GAME EVENTS
 
-// Функція для перевірки зіткнення гравця з перешкодою
-function checkCollision(objects) {
+function checkCollision(objects) {          // check collides player  with obstacle
     for (let i = 0; i < objects.length; i++) {
         const object = objects[i];
         if (
@@ -153,8 +157,6 @@ function checkCrashTarget(objects, bullets) {
         }
     }
 }
-
-
 
 function checkCollisions() {
     if (isInvulnerable) {
@@ -204,7 +206,6 @@ function checkCollisions() {
     }
 }
 
-
 // background first!!!!
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);   // clear screen
@@ -218,10 +219,8 @@ function draw() {
         hpPackArray.forEach(drawHpPack);                    // draw HP
         ammoPackArray.forEach(drawAmmoPack);                // draw ammo
         blastPackArray.forEach(drawBlastPack);              // draw blast
-    }                
-    
+    }                   
 }
-
 
 function update() {                                     // update positions
     if (isGame) {                                       // if true
@@ -242,9 +241,7 @@ function update() {                                     // update positions
         checkBlastCollision(blastPackArray);
 
         draw();                                         // draw everything
-
     }
-
 }
 
 function updateObjectChances() {                        // update chance to create objects
@@ -292,18 +289,6 @@ export function Scores (pts) {                  // score counter
     scoreValue.innerText = score;
 }
 
-export function showMessage(message) {
-    const messageElement = document.getElementById('message');
-    messageElement.style.display = 'block';         // show message
-    messageElement.innerText = message;
- 
-    setTimeout(() => {
-        messageElement.style.display = 'none';
-    }, 1500);
-
-}
-
-
 // Start game
 function startGame() {
     hpValue.innerText = starship.hp;
@@ -311,10 +296,12 @@ function startGame() {
     blastValue.innerText = starship.blast;
     if (!isGame) {
         if (music) { 
-            mainTheme.volume = 0.5;
+            mainTheme.volume = 0.7;
             toLoopMusic(mainTheme) };
         isGame = true;
         isGameOver = false;
+
+        showMessage('GO-GO!!!');
 
         createHpPack();                                     // creating ammo pack
         createAmmoPack();                                   // creating hp pack
@@ -374,29 +361,29 @@ export function pauseGame() {
             }, FPX);                                    // Update every FPX milliseconds
             isPaused = false;
             togglePause();
+            
         } else {                                        // pause the game    
             clearInterval(gameInterval);
             isPaused = true;
             togglePause();
+            showMessage('PAUSE');
         }
     }
 }
 
-
-
-// BUTTONS
-
-//start
-
+///////////////////////////////////////////////////////////////////////
+// KEYS
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' && !isGameOver) {
+        if (sound) { clickButtonSound.play() };
         startGame();
     }
 });
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'p') {
+        if (sound) { clickButtonSound.play() };
         pauseGame();
         // togglePause();
         console.log('pauseGame');
@@ -405,6 +392,7 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'd') {
+        if (sound) { clickButtonSound.play() };
         toggleDark();
         console.log('toggleDark');
     }
@@ -412,6 +400,7 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 's') {
+        clickButtonSound.play();
         toggleSound();       
         console.log('toggleSound');
     }
@@ -419,12 +408,20 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'm') {
+        if (sound) { clickButtonSound.play() };
         toggleMusic(); 
         music ? mainTheme.play() : mainTheme.pause();
         console.log('toggleMusic'); 
     }
 });
-    
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'n') {
+        if (sound) { clickButtonSound.play() };
+        window.location.reload();
+        console.log('reload'); 
+    }
+});    
 
 document.addEventListener('keydown', (event) => {
     if (event.key === '0') {
@@ -437,8 +434,9 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+///////////////////////////////////////////////////////////////////////
+// BUTTONS
 
-// Start the game
 const btnStart = document.getElementById('btn-start');
 btnStart.onclick = () => { startGame() };
 
@@ -458,15 +456,7 @@ buttonNewGame.onclick = () => {
     window.location.reload();
 };
 
+////////////////////////////////////////////////////////////////////////
+// START
 screenStartGame();
-// function gameLoop() {
-//     isGame = false;
-//     isGameOver = false;
-//         screenStartGame();
-    
 
-
-
-
-// }
-// gameLoop();

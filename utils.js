@@ -24,3 +24,13 @@ export function toLoopMusic(music) {
         music.play();                           // Play again
     })
 };
+
+export function showMessage(message) {
+    const messageElement = document.getElementById('message');
+    messageElement.style.display = 'block';         // show message
+    messageElement.innerText = message;
+ 
+    setTimeout(() => {
+        messageElement.style.display = 'none';
+    }, 1500);
+}
