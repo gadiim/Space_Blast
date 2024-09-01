@@ -69,13 +69,15 @@ import { BinaryRandom, Random, toReduceSound, toLoopMusic } from './utils.js';
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const FPX = 50;
+let FPX = 55;
 
 // export const mainTheme = new Audio('./sounds/space-adventure.mp3');
 export const mainTheme = new Audio('./sounds/space-line.mp3');
 export const damageCrash = new Audio('./sounds/damage-crash.mp3');
 export const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
 export const laserShot = new Audio('./sounds/laser-shot.mp3');
+export const starshipCrash = new Audio('./sounds/starship-crash.mp3');
+export const levelUpSound = new Audio('./sounds/level-up.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -84,6 +86,7 @@ export let isGameOver = false;        // Прапорець, що відобра
 export let isInvulnerable = false;
 
 export let score = 0;                   
+export let levelScore = 0;                   
 export let ammoScore = 0;                   
 export let hpScore = 0;                   
 export let blastScore = 0;                   
@@ -100,7 +103,8 @@ export let hpValue = document.getElementById('hp-value');
 export let ammoValue = document.getElementById('ammo-value');
 export let blastValue = document.getElementById('blast-value');
 
-// scoreValue.innerText = score;
+scoreValue.innerText = score;
+// levelValue.innerText = 1;
 hpValue.innerText = starship.hp;
 ammoValue.innerText = starship.ammo;
 blastValue.innerText = starship.blast;
@@ -161,6 +165,11 @@ function checkCollisions() {
         if (starship.hp > 1) {
             starship.hp--;                                      // less hp
             hpValue.innerText = starship.hp;                    // show in display
+
+            if (sound) {                                        // crash sound
+                starshipCrash.play();
+            };
+
             startBlinkingInvulnerable();                        // blinking effect
             setTimeout(() => {
                 isInvulnerable = false;                         // disactivate invulnerability
@@ -176,7 +185,7 @@ function checkCollisions() {
 
             if (sound) {                                        // explosion sound
                 blastExplosion.currentTime = 1;                 // sound beginning from 1st sec
-                blastExplosion.play()
+                blastExplosion.play();
             };
             let blinkInterval = setInterval(() => {             // explosion effect
                 canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
@@ -275,11 +284,24 @@ function screenGameOver() {
 
 export function Scores (pts) {                  // score counter
     score += pts;                               // common score counter
+    levelScore += pts;                          // level score counter
     ammoScore += pts;                           // ammo score counter
     hpScore += pts;                             // hp score counter
     blastScore += pts;                          // blast score counter
     scoreValue.innerText = score;
 }
+
+export function showMessage(message) {
+    const messageElement = document.getElementById('message');
+    messageElement.style.display = 'block';         // show message
+    messageElement.innerText = message;
+ 
+    setTimeout(() => {
+        messageElement.style.display = 'none';
+    }, 1500);
+
+}
+
 
 // Start game
 function startGame() {
@@ -287,38 +309,60 @@ function startGame() {
     ammoValue.innerText = starship.ammo;
     blastValue.innerText = starship.blast;
     if (!isGame) {
-        if (music) { toLoopMusic(mainTheme) };
+        if (music) { 
+            mainTheme.volume = 0.5;
+            toLoopMusic(mainTheme) };
         isGame = true;
         isGameOver = false;
 
         createHpPack();                                     // creating ammo pack
         createAmmoPack();                                   // creating hp pack
         createBlastPack();                                  // creating blast pack
-
-        gameInterval = setInterval(() => {
-            update();                                       // update game state
-            updateObjectChances();                          // update chance to create objects
-
-            if (ammoScore % 10 === 0 && ammoScore !== 0) {  // creating ammo pack every ten points
-                createAmmoPack();                           // creating ammo pack
-                ammoScore = 0;                              // reset ammo pack counter
-            }; 
-            if (hpScore % 50 === 0 && hpScore !== 0) {      // creating hp pack every fifty points
-                createHpPack();                             // creating hp pack
-                hpScore = 0;                                // reset hp pack counter
-            }; 
-            if (blastScore % 30 === 0 && blastScore !== 0) {// creating blast pack every fifty points
-                createBlastPack();                          // creating blast pack
-                blastScore = 0;                             // reset blast pack counter
-            }; 
-
-            if (isGameOver && !isGame) {
-                screenGameOver();
-            }
-        }, FPX);  // Update every FPX milliseconds
- 
+        startGameInterval();                               // starting a game interval
     }
 }
+
+function startGameInterval() {
+    clearInterval(gameInterval);                           // stopping the current interval, if it exists
+
+    gameInterval = setInterval(() => {
+        update();                                       // update game state
+        updateObjectChances();                          // update chance to create objects
+
+        if (levelScore % 2 === 0 && levelScore !== 0) {// new level every 25 points
+            
+            showMessage('LEVEL UP!');
+            
+            levelValue.innerText++;                   // next level
+            if (sound) { levelUpSound.play() };          // signal next level
+            levelScore = 0;                             // reset level score counter
+            FPX -= 5;                                  // FPX reduction
+            createAmmoPack();                           // bonus ammo pack
+            
+            startGameInterval();                        // restart interval with new FPX value
+            
+        };
+        if (ammoScore % 9 === 0 && ammoScore !== 0) {  // creating ammo pack every ten points
+            createAmmoPack();                           // creating ammo pack
+            ammoScore = 0;                              // reset ammo pack counter
+        };
+        if (hpScore % 47 === 0 && hpScore !== 0) {      // creating hp pack every fifty points
+            createHpPack();                             // creating hp pack
+            createAmmoPack();                           // bonus ammo pack
+            hpScore = 0;                                // reset hp pack counter
+        };
+        if (blastScore % 28 === 0 && blastScore !== 0) {// creating blast pack every fifty points
+            createBlastPack();                          // creating blast pack
+            createAmmoPack();                           // bonus ammo pack
+            blastScore = 0;                             // reset blast pack counter
+        };
+
+        if (isGameOver && !isGame) {
+            screenGameOver();
+        }
+    }, FPX);                                             // update every FPX milliseconds
+}
+
 
 export function pauseGame() {
     if (isGame) {

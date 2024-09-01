@@ -96,7 +96,16 @@
             flex-wrap: nowrap;
         }
         
-
+        #message {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 45px;
+            color: white;
+            z-index: 1; /* Впевніться, що він поверх канвасу */
+            display: none; /* Спочатку не відображати */
+        }
         .button-display {
             display: flex;
             flex-direction: column;
@@ -183,6 +192,9 @@
             </table>
         </div>
         <div class="main-display">
+            <div id="message" style="display: none;">
+                GO-GO!!
+            </div>
             <canvas id="gameCanvas" width="640" height="480"></canvas>
         </div>
         <div class="button-display">

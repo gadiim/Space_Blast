@@ -1,7 +1,7 @@
-import { mainTheme, isGame, isPaused } from './game.js';
+import { isPaused } from './game.js';
 
 export let darkMode = true;
-export let sound = false;//false
+export let sound = true;//false
 export let music = true;//true
 // main container
 const gameContainer = document.getElementsByClassName('game-container')[0]; // reference to the first element of the collection

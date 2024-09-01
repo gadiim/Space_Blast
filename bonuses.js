@@ -1,4 +1,9 @@
-import { ammoValue, blastValue, hpValue } from './game.js';
+import {
+    ammoValue,
+    blastValue,
+    hpValue,
+    showMessage
+} from './game.js';
 
 import {
     starship,
@@ -119,6 +124,7 @@ function checkAmmoCollision(packs) {                    // objects intersection
             pack.y < starship.y + starship.height &&    // pack is above of starship
             pack.y + pack.height > starship.y           // pack is below of starship
         ) {
+            // showMessage('AMMO');                     // show event message
             starship.ammo += 10;                            // grow hp
             ammoValue.innerText = starship.ammo;        // show in display
             // startBlinkingAmmo();                        // blinking effect
