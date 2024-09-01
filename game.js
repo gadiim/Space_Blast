@@ -78,7 +78,7 @@ import {
 export const canvas = document.getElementById('gameCanvas');
 export const ctx = canvas.getContext('2d');
 
-export let FPX = 55;
+export let FPS = 55;
 
 export const startTheme = new Audio('./sounds/space-adventure.mp3');
 export const mainTheme = new Audio('./sounds/space-line.mp3');
@@ -324,10 +324,10 @@ function startGameInterval() {
             levelValue.innerText++;                   // next level
             if (sound) { levelUpSound.play() };          // signal next level
             levelScore = 0;                             // reset level score counter
-            FPX -= 5;                                  // FPX reduction
+            FPS -= 5;                                  // FPS reduction
             createAmmoPack();                           // bonus ammo pack
             
-            startGameInterval();                        // restart interval with new FPX value
+            startGameInterval();                        // restart interval with new FPS value
             
         };
         if (ammoScore % 9 === 0 && ammoScore !== 0) {  // creating ammo pack every ten points
@@ -348,7 +348,7 @@ function startGameInterval() {
         if (isGameOver && !isGame) {
             screenGameOver();
         }
-    }, FPX);                                             // update every FPX milliseconds
+    }, FPS);                                             // update every FPS milliseconds
 }
 
 
@@ -358,7 +358,7 @@ export function pauseGame() {
             gameInterval = setInterval(() => {
                 update();                               // update game state
                 updateObjectChances();                  // update chance to create objects
-            }, FPX);                                    // Update every FPX milliseconds
+            }, FPS);                                    // Update every FPS milliseconds
             isPaused = false;
             togglePause();
             
