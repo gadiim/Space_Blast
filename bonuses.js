@@ -2,7 +2,8 @@ import {
     ammoValue,
     blastValue,
     hpValue,
-    showMessage
+    showMessage,
+    collectBonusSound
 } from './game.js';
 
 import {
@@ -12,6 +13,13 @@ import {
     startBlinkingAmmo,
     stopBlinkingAmmo
 } from './starship.js';
+
+import { 
+    sound,
+    music, 
+    darkMode
+} from './nav-buttons.js';
+
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -60,6 +68,9 @@ function checkHpCollision(packs) {                   // objects intersection
             pack.y < starship.y + starship.height && // pack is above of starship
             pack.y + pack.height > starship.y       // pack is below of starship
         ) {
+            if (sound) { 
+                collectBonusSound.play() 
+            };
             starship.hp++;                          // grow hp
             hpValue.innerText = starship.hp;        // show in display
             // startBlinkingHp();                      // blinking effect
@@ -125,6 +136,9 @@ function checkAmmoCollision(packs) {                    // objects intersection
             pack.y + pack.height > starship.y           // pack is below of starship
         ) {
             // showMessage('AMMO');                     // show event message
+            if (sound) { 
+                collectBonusSound.play() 
+            };
             starship.ammo += 10;                            // grow hp
             ammoValue.innerText = starship.ammo;        // show in display
             // startBlinkingAmmo();                        // blinking effect
@@ -195,6 +209,9 @@ function checkBlastCollision(packs) {                   // objects intersection
             pack.y < starship.y + starship.height &&    // pack is above of starship
             pack.y + pack.height > starship.y           // pack is below of starship
         ) {
+            if (sound) { 
+                collectBonusSound.play() 
+            };
             starship.blast ++;                          // grow hp
             blastValue.innerText = starship.blast;      // show in display
             // startBlinkingHp();                       // blinking effect

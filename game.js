@@ -78,6 +78,7 @@ export const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
 export const laserShot = new Audio('./sounds/laser-shot.mp3');
 export const starshipCrash = new Audio('./sounds/starship-crash.mp3');
 export const levelUpSound = new Audio('./sounds/level-up.mp3');
+export const collectBonusSound = new Audio('./sounds/collect-bonus.mp3');
 
 export let gameInterval;              // Інтервал для оновлення гри
 export let isGame = false;
@@ -329,7 +330,7 @@ function startGameInterval() {
         update();                                       // update game state
         updateObjectChances();                          // update chance to create objects
 
-        if (levelScore % 2 === 0 && levelScore !== 0) {// new level every 25 points
+        if (levelScore % 25 === 0 && levelScore !== 0) {// new level every 25 points
             
             showMessage('LEVEL UP!');
             
