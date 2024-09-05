@@ -62,6 +62,8 @@ export function toggleDark() {
         b.style.color = darkMode ?
             'var(--button-text-color-dark-mode)' :
             'var(--button-text-color-light-mode)';
+
+            
     });
 }
 

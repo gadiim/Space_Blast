@@ -301,7 +301,7 @@ function startGame() {
         isGame = true;
         isGameOver = false;
 
-        showMessage('GO-GO!!!');
+        showMessage('DESTROY ASTEROIDS!!!');
 
         createHpPack();                                     // creating ammo pack
         createAmmoPack();                                   // creating hp pack
@@ -385,7 +385,6 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'p') {
         if (sound) { clickButtonSound.play() };
         pauseGame();
-        // togglePause();
         console.log('pauseGame');
     }
 });
@@ -435,26 +434,56 @@ document.addEventListener('keydown', (event) => {
 });
 
 ///////////////////////////////////////////////////////////////////////
-// BUTTONS
+// NAV BUTTONS
 
 const btnStart = document.getElementById('btn-start');
-btnStart.onclick = () => { startGame() };
+btnStart.onclick = () => { 
+    startGame();
+    btnStart.blur();
+ };
 
 
 function exitGame() {
     document.body.textContent = 'Thank you for visiting!';
     setTimeout(() => { window.close() }, 3000);
 }
-const btnExitGame = document.getElementById('btn-exit-game');
-btnExitGame.onclick = () => { exitGame() };
 
-// const buttonDarkMode = document.getElementById('btn-dark-mode');
-// buttonDarkMode.onclick = () => { toggleDark() };
+const btnExitGame = document.getElementById('btn-exit-game');
+btnExitGame.onclick = () => { 
+    exitGame() 
+};
+
+const buttonDarkMode = document.getElementById('btn-dark-mode');
+buttonDarkMode.onclick = () => { 
+    toggleDark(); 
+    buttonDarkMode.blur();
+};
+
+const buttonSoundMode = document.getElementById('btn-sound-mode');
+buttonSoundMode.onclick = () => { 
+    toggleSound(); 
+    buttonSoundMode.blur();
+};
+
+const buttonMusicMode = document.getElementById('btn-music-mode');
+buttonMusicMode.onclick = () => { 
+    toggleMusic();
+    music ? mainTheme.play() : mainTheme.pause(); 
+    buttonMusicMode.blur();
+};
 
 const buttonNewGame = document.getElementById('btn-new-game');
 buttonNewGame.onclick = () => { 
     window.location.reload();
+    buttonNewGame.blur();
 };
+
+const buttonPause = document.getElementById('btn-pause');
+buttonPause.onclick = () => { 
+    pauseGame(); 
+    buttonPause.blur();
+};
+
 
 ////////////////////////////////////////////////////////////////////////
 // START
