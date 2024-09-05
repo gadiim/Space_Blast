@@ -78,23 +78,22 @@ import {
 export const canvas = document.getElementById('gameCanvas');
 export const ctx = canvas.getContext('2d');
 
-export let FPS = 55;
+export const startTheme = new Audio('./assets/sounds/space-adventure.mp3');
+export const mainTheme = new Audio('./assets/sounds/space-line.mp3');
+export const damageCrash = new Audio('./assets/sounds/damage-crash.mp3');
+export const blastExplosion = new Audio('./assets/sounds/blast-explosion.mp3');
+export const laserShot = new Audio('./assets/sounds/laser-shot.mp3');
+export const starshipCrash = new Audio('./assets/sounds/starship-crash.mp3');
+export const levelUpSound = new Audio('./assets/sounds/level-up.mp3');
+export const collectBonusSound = new Audio('./assets/sounds/collect-bonus.mp3');
+export const clickButtonSound = new Audio('./assets/sounds/click-button.mp3');
 
-export const startTheme = new Audio('./sounds/space-adventure.mp3');
-export const mainTheme = new Audio('./sounds/space-line.mp3');
-export const damageCrash = new Audio('./sounds/damage-crash.mp3');
-export const blastExplosion = new Audio('./sounds/blast-explosion.mp3');
-export const laserShot = new Audio('./sounds/laser-shot.mp3');
-export const starshipCrash = new Audio('./sounds/starship-crash.mp3');
-export const levelUpSound = new Audio('./sounds/level-up.mp3');
-export const collectBonusSound = new Audio('./sounds/collect-bonus.mp3');
-export const clickButtonSound = new Audio('./sounds/click-button.mp3');
-
-export let gameInterval;              // Інтервал для оновлення гри
-export let isGame = false;
-export let isPaused = false;
-export let isGameOver = false;        // Прапорець, що відображає стан гри (закінчена чи ні)
-export let isInvulnerable = false;
+export let gameInterval;                // game update interval
+export let isGame = false;              // game state
+export let isPaused = false;            // game state
+export let isGameOver = false;          // game state
+export let isInvulnerable = false;      // spceship state
+export let FPS = 55;                    // game speed
 
 export let score = 0;                   
 export let levelScore = 0;                   
