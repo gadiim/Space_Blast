@@ -52,24 +52,34 @@ canvas {
     font-size: xx-large; 
 }
 
-.status-display table {
-    width: 100%;
-}
-
-.status-display table tr td:first-of-type {
+/* .status-display table tr td:first-of-type  */
+#status-table tr td:first-of-type {
     text-align: left;
-    width: auto;
+    width: 70%;
     /* background-color: blue; */
 }
-.status-display table tr td:last-of-type {
+/* .status-display table tr td:last-of-type { */
+#status-table tr td:last-of-type {
     text-align: right;
     width: 30%;
     background-color: var(--cell-background-color-dark-mode);
 }
 
-#tutorial {
-    margin-top: 20px;
+#tutorial-table {
     font-size: large;
+    width: 100%;
+    margin-top: 5px;
+}
+
+#tutorial-table tr td:first-of-type {
+    width: 30%;
+    text-align: center;
+    background-color: var(--cell-background-color-dark-mode);
+}
+
+#tutorial-table tr td:last-of-type {
+    width: 70%;
+    text-align: right;
 }
 
 .main-display {

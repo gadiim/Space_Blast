@@ -189,12 +189,12 @@ function checkCollisions() {
                 blastExplosion.currentTime = 1;                 // sound beginning from 1st sec
                 blastExplosion.play();
             };
-            let blinkInterval = setInterval(() => {             // explosion effect
+            let blinkInterval = setInterval(() => {             // spaceship explosion effect
                 canvas.style.backgroundColor = canvas.style.backgroundColor === 'transparent' ? 'white' : 'transparent';
             }, 400);
             setTimeout(() => {
                 clearInterval(blinkInterval);
-                canvas.style.backgroundColor = 'white';
+                canvas.style.backgroundColor = 'tomato';
             }, 1000);
 
             clearInterval(gameInterval);                        // stop update chances
@@ -265,7 +265,7 @@ function screenStartGame() {
     ctx.fillStyle = 'white';
     ctx.font = '45px Pixelify Sans';
     ctx.textAlign = 'center'
-    ctx.fillText("STAR BLAST", 320, 240);
+    ctx.fillText("STAR BLAST", canvas.width / 2, canvas.height / 2);
 }
 
 function screenGameOver() {
@@ -275,7 +275,7 @@ function screenGameOver() {
         ctx.fillStyle = 'white';
         ctx.font = '45px Pixelify Sans';
         ctx.textAlign = 'center'
-        ctx.fillText("GAME OVER!", 320, 240);
+        ctx.fillText("GAME OVER!", canvas.width / 2, canvas.height / 2);
     }, 1500);
 }
 
@@ -456,12 +456,14 @@ const buttonDarkMode = document.getElementById('btn-dark-mode');
 buttonDarkMode.onclick = () => { 
     toggleDark(); 
     buttonDarkMode.blur();
+    canvas.focus();
 };
 
 const buttonSoundMode = document.getElementById('btn-sound-mode');
 buttonSoundMode.onclick = () => { 
     toggleSound(); 
     buttonSoundMode.blur();
+    canvas.focus();
 };
 
 const buttonMusicMode = document.getElementById('btn-music-mode');
@@ -469,18 +471,21 @@ buttonMusicMode.onclick = () => {
     toggleMusic();
     music ? mainTheme.play() : mainTheme.pause(); 
     buttonMusicMode.blur();
+    canvas.focus();
 };
 
 const buttonNewGame = document.getElementById('btn-new-game');
 buttonNewGame.onclick = () => { 
     window.location.reload();
     buttonNewGame.blur();
+    canvas.focus();
 };
 
 const buttonPause = document.getElementById('btn-pause');
 buttonPause.onclick = () => { 
     pauseGame(); 
     buttonPause.blur();
+    canvas.focus();
 };
 
 

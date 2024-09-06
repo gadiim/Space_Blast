@@ -20,7 +20,7 @@
 <body>
     <div class="game-container">
         <div class="status-display">
-            <table>
+            <table id="status-table">
                 <tr>
                     <td id="score-legend">
                         score
@@ -62,77 +62,85 @@
                     </td>
                 </tr>
             </table>
-            <table id="tutorial" style="width: 100%;">
+            <table id="tutorial-table">
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         ← / →
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Left / Right
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         ↑ / ↓
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Up / Down
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         Space
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Shoot
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         0 
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Blast
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         P 
                     </td>
-                    <td style="width: 70%;">
-                        pause
+                    <td>
+                        Pause
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         D 
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Dark mode
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         S 
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Sound
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         M 
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         Music
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">
+                    <td>
                         N 
                     </td>
-                    <td style="width: 70%;">
+                    <td>
                         new Game
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Enter 
+                    </td>
+                    <td>
+                        Start Game
                     </td>
                 </tr>
             </table>
@@ -141,7 +149,8 @@
             <div id="message" style="display: none;">
                 GO-GO!!
             </div>
-            <canvas id="gameCanvas" width="640" height="480"></canvas>
+            <!-- <canvas id="gameCanvas" width="640" height="480"></canvas> -->
+            <canvas id="gameCanvas" width="680" height="510"></canvas>
         </div>
         <div class="button-display">
             
@@ -156,8 +165,6 @@
         </div>
     </div>
     <script type="module" src="game.js"></script>
-    <!-- <script src="good-move-player.js"></script> -->
-    <!-- <script type="module" src="nav-buttons.js"></script> -->
 </body>
 
 </html>
