@@ -40,6 +40,7 @@ const starship = {
     color: 'lightblue',
     dx: 5,                      // move step by X
     dy: 5,                      // move step by Y
+    
     //drawinhg
     flameWidth: 10,
     flameHeight: 3,
@@ -51,8 +52,8 @@ const starship = {
     heightCockpit: 10,
     colorCockpit: 'blue',
 
-    hp: 1,
-    ammo: 10,
+    hp: 2,
+    ammo: 20,
     blast: 1
 };
 

@@ -1,3 +1,38 @@
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('assets/fonts/PixelifySans-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('assets/fonts/static/PixelifySans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('assets/fonts/static/PixelifySans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('assets/fonts/static/PixelifySans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pixelify Sans';
+    src: url('assets/fonts/static/PixelifySans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 :root {
     --display-height: 100vh;
     --display-block-height: 480px;
@@ -20,7 +55,7 @@
 html,
 body {
     margin: 0;
-    font-family: "Pixelify Sans", sans-serif;
+    font-family: 'Pixelify Sans', sans-serif;
     display: block;
     text-align: center;
 }
